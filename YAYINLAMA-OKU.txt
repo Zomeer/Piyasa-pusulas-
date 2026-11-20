@@ -1,0 +1,13 @@
+PIYASA PUSULASI - BIRLESIK NETLIFY YAYINI
+
+Klasor yapisi:
+- index.html       : Mevcut ana site
+- panel/index.html : Yeni Piyasa Paneli
+
+Yayinlama:
+1. Netlify hesabina girin.
+2. Mevcut Piyasa Pusulasi sitenizin Sites/Deploys alanini acin.
+3. Bu klasoru (ZIP degil, ZIP'ten cikarilmis klasoru) yeni deploy olarak yukleyin.
+4. Ayni domain korunur. Ana siteye /panel/ yolu ile ulasilir.
+
+Not: Bu paket, kullanicinin Library'de bulunan mevcut index.html kaynak dosyasina dayanir. Canli sitede bu dosyadan sonra yapilan degisiklikler varsa, yayinlamadan once birlestirilmelidir.

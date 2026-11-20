@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Piyasa Pusula | Günlük Analiz ve Hisse Yorumları</title>
+<meta name="description" content="Günlük piyasa analizi ve beğenilen şirketlerin hisse yorumları. Yatırım tavsiyesi değildir.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef2f5;--surface:#fff;--ink:#14283c;--muted:#4f6275;--accent:#e8a317;--accent-ink:#14283c;--line:#cfd9e1;--ok:#1b7f4b;--warn:#a85d00;--watch:#2c5d99;color-scheme:light;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1c2a;--surface:#172a3d;--ink:#eaf0f5;--muted:#a3b4c3;--accent:#f0b43a;--line:#2a4056;--ok:#5fd394;--warn:#f0b43a;--watch:#8db8f0;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1c2a;--surface:#172a3d;--ink:#eaf0f5;--muted:#a3b4c3;--accent:#f0b43a;--line:#2a4056;--ok:#5fd394;--warn:#f0b43a;--watch:#8db8f0;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+header{border-bottom:1px solid var(--line)}
+nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0;flex-wrap:wrap}
+.logo{font-weight:800;font-size:1.25rem;text-decoration:none}
+nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+nav ul a{text-decoration:none;color:var(--muted);font-weight:600}
+nav ul a:hover{color:var(--ink)}
+.hero{padding:64px 0 56px}
+h1{font-size:clamp(2.3rem,7vw,4.4rem);line-height:1.05;margin:0 0 20px;font-weight:800;letter-spacing:-.02em;max-width:16ch}
+.hero p{max-width:54ch;color:var(--muted);font-size:1.15rem;margin:0 0 28px}
+.btn{display:inline-block;padding:13px 24px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font:inherit;font-weight:800;text-decoration:none;border:0;cursor:pointer}
+.btn.alt{background:transparent;color:var(--ink);border:2px solid var(--line);margin-left:8px}
+section{padding:52px 0;border-top:1px solid var(--line)}
+h2{font-size:clamp(1.6rem,4vw,2.3rem);margin:0 0 8px;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:0 0 24px;max-width:60ch}
+.today{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--accent);border-radius:12px;padding:24px}
+.today time{color:var(--muted);font-weight:600}
+.today h3{margin:6px 0 10px;font-size:1.35rem}
+.today p{margin:0 0 10px;max-width:70ch}
+.tools{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.tools input{flex:1 1 240px;padding:12px 16px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:10px}
+.card .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.card .kod{font-weight:800;font-size:1.3rem}
+.card .tarih{color:var(--muted);font-size:.9rem}
+.card h3{margin:0;font-size:1.05rem}
+.card p{margin:0;color:var(--muted)}
+.tag{display:inline-block;align-self:flex-start;font-weight:800;font-size:.9rem;padding:3px 12px;border-radius:999px;border:2px solid currentColor}
+.tag.olumlu{color:var(--ok)}.tag.temkinli{color:var(--warn)}.tag.izlemede{color:var(--watch)}
+.lv{display:flex;gap:16px;flex-wrap:wrap;font-size:.95rem;border-top:1px solid var(--line);padding-top:10px}
+.empty{color:var(--muted)}
+.notice{background:var(--surface);border:2px solid var(--warn);border-radius:12px;padding:20px 22px;max-width:75ch}
+.notice strong{color:var(--warn)}
+.about p{color:var(--muted);max-width:62ch;margin:0 0 14px}
+footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:.95rem}
+.fr{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+button.theme{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 14px;font:inherit;cursor:pointer}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<nav aria-label="Ana menü">
+<a class="logo" href="#ana">Piyasa Pusula</a>
+<ul>
+<li><a href="#gunluk">Günlük analiz</a></li>
+<li><a href="#hisseler">Hisse yorumları</a></li>
+<li><a href="#hakkimda">Hakkımda</a></li>
+<li><a href="#iletisim">İletişim</a></li>
+<li><a href="/panel/">Piyasa Paneli</a></li>
+</ul>
+</nav>
+</div></header>
+
+<main id="ana">
+<div class="wrap hero">
+<h1>Günlük piyasa analizi, sade dille.</h1>
+<p>Beğendiğim şirketlerin hisselerini her gün yorumluyorum. Yorumlar bilgilendirme amaçlıdır, yatırım tavsiyesi değildir.</p>
+<a class="btn" href="https://t.me/piyasapusula1" rel="noopener">Telegram’a katıl</a>
+<a class="btn alt" href="#hisseler">Yorumlara göz at</a>
+</div>
+
+<section id="gunluk"><div class="wrap">
+<h2>Günlük analiz</h2>
+<p class="sub">Günün öne çıkan başlıkları ve piyasaya genel bakış. Aşağıdaki metin örnektir.</p>
+<article class="today">
+<time id="bugun"></time>
+<h3 id="gBaslik"></h3>
+<p id="gMetin"></p>
+</article>
+</div></section>
+
+<section id="hisseler"><div class="wrap">
+<h2>Hisse yorumları</h2>
+<p class="sub">Hisse kodu veya şirket adıyla arayın. Bu bölümdeki yorumlar örnektir; Ekim 2026 sonu itibarıyla kamuya açık haber ve aracı kurum raporlarından derlenmiştir. Yayınlamadan önce kendi görüşünüzle değiştirin.</p>
+<div class="tools"><input id="ara" type="search" placeholder="Örnek: hisse kodu" aria-label="Hisse ara"></div>
+<div class="grid" id="liste"></div>
+<p class="empty" id="bos" hidden>Aradığınız hisse için yorum bulunamadı.</p>
+</div></section>
+
+<section><div class="wrap">
+<div class="notice"><strong>Önemli uyarı:</strong> Bu sitedeki içerikler yalnızca genel bilgilendirme amacıyla hazırlanmıştır ve yatırım danışmanlığı değildir. Yatırım kararlarınızı kendi araştırmanıza ve risk durumunuza göre verin. Geçmiş performans gelecekteki sonuçların garantisi değildir.</div>
+</div></section>
+
+<section id="hakkimda" class="about"><div class="wrap">
+<h2>Hakkımda</h2>
+<p>Sermaye piyasaları alanında eğitim aldım ve piyasaları yıllardır yakından takip ediyorum. Günlük bültenleri ve hisse yorumlarını Telegram kanalımda da paylaşıyorum.</p>
+</div></section>
+
+<section id="iletisim"><div class="wrap">
+<h2>İletişim</h2>
+<p class="sub">Güncel paylaşımlar ve duyurular için Telegram kanalına katılabilirsiniz.</p>
+<a class="btn" href="https://t.me/piyasapusula1" rel="noopener">t.me/piyasapusula1</a>
+</div></section>
+</main>
+
+<footer><div class="wrap fr">
+<span>© <span id="yil">2026</span> Piyasa Pusula. Yatırım tavsiyesi değildir.</span>
+<button class="theme" id="tema" type="button">Temayı değiştir</button>
+</div></footer>
+
+<script>
+/* ====== BURAYI KENDİNİZE GÖRE DEĞİŞTİRİN ====== */
+var GUNLUK = {
+  tarih: "26–30 Ekim 2026 verileriyle örnek özet",
+  baslik: "BIST 100, 11.000 puan desteğini koruyabilecek mi?",
+  metin: "BIST 100, 26 Ekim’de %0,27 yükselişle 11.147 puandan kapandı. Endeks bir önceki hafta %5,16 değer kaybetmiş ve üst üste altıncı haftayı ekside bitirmişti. Aracı kurumlar 11.000, 10.800 ve 10.700 puanı destek olarak izliyor. TCMB’nin 22 Ekim’deki 100 baz puanlık faiz indirimi bankacılık gibi faize duyarlı sektörler için destekleyici görülüyor; üçüncü çeyrek bilanço sezonu ise hisse bazında ayrışmayı belirleyecek. Dış tarafta Brent petrol 30 Ekim’de 117 doların üzerinde, dolar/TL ise 49,95 civarında işlem gördü."
+};
+/* gorus: "olumlu", "temkinli" veya "izlemede" */
+var HISSELER = [
+  {kod:"ASELS", sirket:"Aselsan", tarih:"30 Ekim 2026", gorus:"izlemede", baslik:"Bilanço sonrası hedef fiyatlar birbirinden çok uzak", yorum:"Üçüncü çeyrek bilançosunun ardından 28 Ekim’de 15 aracı kurum hedef fiyat açıkladı. En düşük hedef 341 TL (“tut”), Vakıf Yatırım 580 TL (“al”) ve Gedik Yatırım 30 Ekim’de 594 TL (“endeks üstü getiri”) olarak açıkladı. Beklentilerin bu kadar dağınık olması, hissede kısa vadeli dalgalanmanın sürebileceğine işaret ediyor.", fiyat:"346,25 TL (30 Ekim)", aralik:"341 – 594 TL"},
+  {kod:"AKBNK", sirket:"Akbank", tarih:"30 Ekim 2026", gorus:"olumlu", baslik:"Faiz indirimi bankacılık hisselerine destek olabilir", yorum:"Akbank’ın 2026 ilk dokuz aylık solo net kârı 45,98 milyar TL oldu; önceki rakam 38,92 milyar TL idi. TCMB’nin 22 Ekim’deki 100 baz puanlık faiz indirimi bankacılık hisseleri için destekleyici bir unsur olarak görülüyor; bankacılık endeksi 26 Ekim’de yaklaşık %2 yükseldi. Faizlerin seyri ve bilanço sonrası kurum raporları takip edilmeli.", fiyat:"—", aralik:"—"},
+  {kod:"THYAO", sirket:"Türk Hava Yolları", tarih:"30 Ekim 2026", gorus:"temkinli", baslik:"Petrol fiyatı havayolu hisseleri için ana risk", yorum:"Brent petrol 30 Ekim’de 117 doların üzerinde işlem gördü; yakıt maliyeti havayolu şirketleri için temel risk. Info Yatırım’ın raporunda THY’nin ikinci çeyrekte FAVÖK’ünün %49, net kârının %71,5 gerilediği görülüyor. Hisse 19 Ekim’de 266 TL’den kapandı; kurum hedefleri petrol fiyatlarının seyrine göre değişebilir.", fiyat:"266 TL (19 Ekim)", aralik:"373,25 TL (Info Yatırım)"}
+];
+/* ============================================== */
+
+var gorusAd={olumlu:"Olumlu",temkinli:"Temkinli",izlemede:"İzlemede"};
+document.getElementById('yil').textContent=new Date().getFullYear();
+document.getElementById('bugun').textContent=GUNLUK.tarih||new Date().toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric',weekday:'long'});
+document.getElementById('gBaslik').textContent=GUNLUK.baslik;
+document.getElementById('gMetin').textContent=GUNLUK.metin;
+
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e}
+function ciz(q){
+  var liste=document.getElementById('liste');liste.textContent='';
+  q=(q||'').toLocaleLowerCase('tr-TR');
+  var n=0;
+  HISSELER.forEach(function(h){
+    if(q&&(h.kod+' '+h.sirket).toLocaleLowerCase('tr-TR').indexOf(q)<0)return;
+    n++;
+    var c=el('article','card'),top=el('div','top');
+    top.appendChild(el('span','kod',h.kod));top.appendChild(el('span','tarih',h.tarih));
+    c.appendChild(top);
+    c.appendChild(el('span','',h.sirket)).style.color='var(--muted)';
+    c.appendChild(el('span','tag '+h.gorus,gorusAd[h.gorus]||h.gorus));
+    c.appendChild(el('h3','',h.baslik));
+    c.appendChild(el('p','',h.yorum));
+    var lv=el('div','lv');lv.appendChild(el('span','','Son fiyat: '+h.fiyat));lv.appendChild(el('span','','Kurum hedefleri: '+h.aralik));
+    c.appendChild(lv);liste.appendChild(c);
+  });
+  document.getElementById('bos').hidden=n>0;
+}
+ciz('');
+document.getElementById('ara').addEventListener('input',function(e){ciz(e.target.value)});
+
+document.getElementById('tema').addEventListener('click',function(){
+  var r=document.documentElement;
+  var dark=r.getAttribute('data-theme')==='dark'||(r.getAttribute('data-theme')!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches);
+  r.setAttribute('data-theme',dark?'light':'dark');
+});
+</script>
+</body>
+</html>
