@@ -1,0 +1,2 @@
+# Piyasa-pusulas-
+Finans 
