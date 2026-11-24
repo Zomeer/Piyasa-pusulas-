@@ -1,174 +1,101 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Piyasa Pusula | Günlük Analiz ve Hisse Yorumları</title>
-<meta name="description" content="Günlük piyasa analizi ve beğenilen şirketlerin hisse yorumları. Yatırım tavsiyesi değildir.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#eef2f5;--surface:#fff;--ink:#14283c;--muted:#4f6275;--accent:#e8a317;--accent-ink:#14283c;--line:#cfd9e1;--ok:#1b7f4b;--warn:#a85d00;--watch:#2c5d99;color-scheme:light;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1c2a;--surface:#172a3d;--ink:#eaf0f5;--muted:#a3b4c3;--accent:#f0b43a;--line:#2a4056;--ok:#5fd394;--warn:#f0b43a;--watch:#8db8f0;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0f1c2a;--surface:#172a3d;--ink:#eaf0f5;--muted:#a3b4c3;--accent:#f0b43a;--line:#2a4056;--ok:#5fd394;--warn:#f0b43a;--watch:#8db8f0;color-scheme:dark}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6}
-a{color:inherit}
-:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
-header{border-bottom:1px solid var(--line)}
-nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 0;flex-wrap:wrap}
-.logo{font-weight:800;font-size:1.25rem;text-decoration:none}
-nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
-nav ul a{text-decoration:none;color:var(--muted);font-weight:600}
-nav ul a:hover{color:var(--ink)}
-.hero{padding:64px 0 56px}
-h1{font-size:clamp(2.3rem,7vw,4.4rem);line-height:1.05;margin:0 0 20px;font-weight:800;letter-spacing:-.02em;max-width:16ch}
-.hero p{max-width:54ch;color:var(--muted);font-size:1.15rem;margin:0 0 28px}
-.btn{display:inline-block;padding:13px 24px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font:inherit;font-weight:800;text-decoration:none;border:0;cursor:pointer}
-.btn.alt{background:transparent;color:var(--ink);border:2px solid var(--line);margin-left:8px}
-section{padding:52px 0;border-top:1px solid var(--line)}
-h2{font-size:clamp(1.6rem,4vw,2.3rem);margin:0 0 8px;letter-spacing:-.01em}
-.sub{color:var(--muted);margin:0 0 24px;max-width:60ch}
-.today{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--accent);border-radius:12px;padding:24px}
-.today time{color:var(--muted);font-weight:600}
-.today h3{margin:6px 0 10px;font-size:1.35rem}
-.today p{margin:0 0 10px;max-width:70ch}
-.tools{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
-.tools input{flex:1 1 240px;padding:12px 16px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:10px}
-.card .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
-.card .kod{font-weight:800;font-size:1.3rem}
-.card .tarih{color:var(--muted);font-size:.9rem}
-.card h3{margin:0;font-size:1.05rem}
-.card p{margin:0;color:var(--muted)}
-.tag{display:inline-block;align-self:flex-start;font-weight:800;font-size:.9rem;padding:3px 12px;border-radius:999px;border:2px solid currentColor}
-.tag.olumlu{color:var(--ok)}.tag.temkinli{color:var(--warn)}.tag.izlemede{color:var(--watch)}
-.lv{display:flex;gap:16px;flex-wrap:wrap;font-size:.95rem;border-top:1px solid var(--line);padding-top:10px}
-.empty{color:var(--muted)}
-.notice{background:var(--surface);border:2px solid var(--warn);border-radius:12px;padding:20px 22px;max-width:75ch}
-.notice strong{color:var(--warn)}
-.about p{color:var(--muted);max-width:62ch;margin:0 0 14px}
-footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:.95rem}
-.fr{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
-button.theme{background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 14px;font:inherit;cursor:pointer}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101d2b">
+  <meta name="description" content="Piyasa Pusulası: finansal tabloları, makro gelişmeleri ve piyasa yorumlarını sade bir dille takip edin.">
+  <title>Piyasa Pusulası — Finans, sade bir dille</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{color-scheme:light;--bg:#f4f3ef;--paper:#fff;--paper-soft:#f8f7f3;--ink:#172538;--muted:#667383;--line:#e4e5e2;--navy:#101d2b;--navy-soft:#182a3b;--gold:#e4b45c;--gold-deep:#9b6a1e;--teal:#168577;--shadow:0 18px 55px rgba(20,35,50,.08);--radius:18px}
+    :root[data-theme="dark"]{color-scheme:dark;--bg:#0d1722;--paper:#142231;--paper-soft:#192a3a;--ink:#edf2f6;--muted:#a4b2bf;--line:#293a49;--navy:#09121c;--navy-soft:#122231;--gold:#f0c36d;--gold-deep:#f0c36d;--teal:#56c5b2;--shadow:0 18px 55px rgba(0,0,0,.2)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;background:var(--bg);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;line-height:1.65}a{color:inherit}button,input{font:inherit}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:3px}.wrap{width:min(1120px,calc(100% - 40px));margin-inline:auto}
+    .topline{background:var(--navy);color:#eaf0f4;font-size:.8rem}.topline .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0}.topline strong{color:var(--gold);font-weight:700}.topline time{color:#bdc8d1}
+    header{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--paper) 94%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}.nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{display:flex;align-items:center;gap:11px;text-decoration:none;font-family:Manrope,sans-serif;font-weight:800;letter-spacing:-.04em;font-size:1.15rem;white-space:nowrap}.brand-mark{display:grid;place-items:center;width:37px;height:37px;border-radius:12px;background:var(--navy);color:var(--gold);font-size:1.15rem}.brand span:last-child{color:var(--teal)}.navlinks{display:flex;align-items:center;gap:25px}.navlinks a{text-decoration:none;color:var(--muted);font-size:.9rem;font-weight:600}.navlinks a:hover{color:var(--ink)}.nav-actions{display:flex;align-items:center;gap:10px}.icon-btn{width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--paper);color:var(--ink);cursor:pointer}.menu-btn{display:none}
+    .hero{position:relative;overflow:hidden;background:var(--navy);color:#f5f5f1;padding:76px 0 64px}.hero:after{content:"";position:absolute;width:470px;height:470px;border:1px solid rgba(228,180,92,.16);border-radius:50%;right:-135px;top:-190px;box-shadow:0 0 0 48px rgba(228,180,92,.025),0 0 0 96px rgba(228,180,92,.025)}.hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:1.25fr .75fr;align-items:center;gap:60px}.eyebrow{display:flex;align-items:center;gap:9px;color:var(--gold);font-weight:700;font-size:.76rem;letter-spacing:.13em;text-transform:uppercase}.eyebrow:before{content:"";width:25px;height:1px;background:currentColor}h1,h2,h3,p{margin-top:0}h1,h2,h3{font-family:Manrope,"DM Sans",sans-serif}h1{max-width:740px;font-size:clamp(2.6rem,6.1vw,5.25rem);line-height:1.02;letter-spacing:-.065em;margin:19px 0 20px}h1 em{font-style:normal;color:var(--gold)}.hero-copy{max-width:570px;color:#c0cbd3;font-size:1.08rem;margin-bottom:28px}.hero-ctas{display:flex;flex-wrap:wrap;gap:11px}.button{display:inline-flex;justify-content:center;align-items:center;gap:8px;text-decoration:none;border:1px solid transparent;border-radius:999px;padding:12px 19px;font-weight:700;font-size:.9rem;transition:transform .18s,background .18s}.button:hover{transform:translateY(-2px)}.button-primary{background:var(--gold);color:#172538}.button-outline{border-color:#506070;color:#f5f5f1}.hero-note{margin-top:18px;color:#98a8b5;font-size:.78rem}.hero-aside{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.045);border-radius:var(--radius);padding:24px}.aside-label{color:var(--gold);font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;font-weight:700}.aside-title{font:700 1.24rem/1.35 Manrope,sans-serif;margin:9px 0 10px}.aside-text{font-size:.88rem;color:#c0cbd3;margin-bottom:18px}.aside-stat{display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid rgba(255,255,255,.15);font-size:.82rem;color:#b9c5ce}.aside-stat b{color:#fff}
+    .section{padding:76px 0}.section-head{display:flex;align-items:end;justify-content:space-between;gap:22px;margin-bottom:26px}.section-kicker{color:var(--teal);font-size:.75rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase;margin-bottom:7px}.section-title{font-size:clamp(1.7rem,3.8vw,2.55rem);line-height:1.14;letter-spacing:-.05em;margin:0}.section-desc{max-width:560px;color:var(--muted);margin:10px 0 0}.updated{white-space:nowrap;color:var(--muted);font-size:.8rem;border:1px solid var(--line);background:var(--paper);padding:8px 12px;border-radius:999px}
+    .filters{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:20px}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:var(--paper);color:var(--muted);border-radius:999px;padding:8px 14px;cursor:pointer;font-size:.82rem;font-weight:700}.chip[aria-pressed="true"],.chip:hover{background:var(--navy);border-color:var(--navy);color:#fff}.search{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:999px;background:var(--paper);padding:0 14px;min-width:min(100%,260px)}.search input{width:100%;border:0;outline:0;background:transparent;color:var(--ink);padding:10px 0;font-size:.85rem}.search input:focus-visible{outline:0}.analysis-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.analysis-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:25px;box-shadow:0 4px 18px rgba(20,35,50,.025);transition:transform .2s,box-shadow .2s}.analysis-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}.card-meta{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:16px}.category{color:var(--teal);background:color-mix(in srgb,var(--teal) 10%,var(--paper));border-radius:999px;padding:5px 10px;font-size:.72rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase}.read-time{color:var(--muted);font-size:.76rem}.analysis-card h3{font-size:1.32rem;line-height:1.28;letter-spacing:-.035em;margin:0 0 13px}.analysis-card p{color:var(--muted);font-size:.92rem;margin:0 0 12px}.points{list-style:none;padding:0;margin:18px 0 0;border-top:1px solid var(--line)}.points li{position:relative;padding:11px 0 11px 23px;border-bottom:1px solid var(--line);font-size:.86rem}.points li:last-child{border-bottom:0;padding-bottom:0}.points li:before{content:"↗";position:absolute;left:0;top:10px;color:var(--gold-deep);font-weight:800}.empty{grid-column:1/-1;color:var(--muted);padding:30px;text-align:center;border:1px dashed var(--line);border-radius:var(--radius)}
+    .opinion-section{background:var(--paper-soft);border-block:1px solid var(--line)}.opinion-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.opinion-card{display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:23px}.opinion-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}.source{font-size:.78rem;font-weight:700;color:var(--teal)}.opinion-date{font-size:.75rem;color:var(--muted)}.opinion-card h3{font-size:1.22rem;letter-spacing:-.035em;margin:0 0 10px}.opinion-card p{font-size:.9rem;color:var(--muted);margin:0 0 20px}.source-link{margin-top:auto;display:inline-flex;align-items:center;gap:7px;color:var(--gold-deep);font-size:.83rem;font-weight:800;text-decoration:none}.source-link:hover{text-decoration:underline}.disclaimer{display:flex;gap:15px;align-items:flex-start;border:1px solid color-mix(in srgb,var(--gold) 55%,var(--line));background:color-mix(in srgb,var(--gold) 9%,var(--paper));border-radius:14px;padding:18px 20px}.disclaimer-icon{color:var(--gold-deep);font-size:1.2rem}.disclaimer p{color:var(--muted);font-size:.82rem;margin:0}.disclaimer strong{color:var(--ink)}
+    footer{background:var(--navy);color:#d5dde3;padding:34px 0}.footer-inner{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}.footer-brand{font-family:Manrope,sans-serif;font-weight:800}.footer-brand span{color:var(--gold)}.footer-copy{font-size:.78rem;color:#9eacb8;margin:5px 0 0}.back-top{color:var(--gold);font-size:.82rem;text-decoration:none;font-weight:700}
+    @media(max-width:850px){.hero-inner{grid-template-columns:1fr;gap:30px}.hero-aside{max-width:560px}.navlinks{gap:15px}.navlinks a{font-size:.82rem}}
+    @media(max-width:680px){.wrap{width:min(100% - 30px,1120px)}.topline .wrap{font-size:.72rem}.nav{min-height:66px}.navlinks{display:none;position:absolute;left:0;right:0;top:66px;padding:14px 20px 20px;background:var(--paper);border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;gap:0}.navlinks.open{display:flex}.navlinks a{padding:11px 4px;border-bottom:1px solid var(--line);font-size:.9rem}.menu-btn{display:inline-grid;place-items:center}.hero{padding:58px 0 48px}.hero-inner{gap:26px}h1{font-size:clamp(2.65rem,13vw,4rem)}.hero-copy{font-size:1rem}.section{padding:56px 0}.section-head{align-items:flex-start;flex-direction:column}.analysis-grid,.opinion-list{grid-template-columns:1fr}.analysis-card{padding:21px}.filters{align-items:stretch}.search{width:100%}.updated{white-space:normal}.footer-inner{align-items:flex-start;flex-direction:column}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+  </style>
 </head>
 <body>
-<header><div class="wrap">
-<nav aria-label="Ana menü">
-<a class="logo" href="#ana">Piyasa Pusula</a>
-<ul>
-<li><a href="#gunluk">Günlük analiz</a></li>
-<li><a href="#hisseler">Hisse yorumları</a></li>
-<li><a href="#hakkimda">Hakkımda</a></li>
-<li><a href="#iletisim">İletişim</a></li>
-<li><a href="/panel/">Piyasa Paneli</a></li>
-</ul>
-</nav>
-</div></header>
-
-<main id="ana">
-<div class="wrap hero">
-<h1>Günlük piyasa analizi, sade dille.</h1>
-<p>Beğendiğim şirketlerin hisselerini her gün yorumluyorum. Yorumlar bilgilendirme amaçlıdır, yatırım tavsiyesi değildir.</p>
-<a class="btn" href="https://t.me/piyasapusula1" rel="noopener">Telegram’a katıl</a>
-<a class="btn alt" href="#hisseler">Yorumlara göz at</a>
-</div>
-
-<section id="gunluk"><div class="wrap">
-<h2>Günlük analiz</h2>
-<p class="sub">Günün öne çıkan başlıkları ve piyasaya genel bakış. Aşağıdaki metin örnektir.</p>
-<article class="today">
-<time id="bugun"></time>
-<h3 id="gBaslik"></h3>
-<p id="gMetin"></p>
-</article>
-</div></section>
-
-<section id="hisseler"><div class="wrap">
-<h2>Hisse yorumları</h2>
-<p class="sub">Hisse kodu veya şirket adıyla arayın. Bu bölümdeki yorumlar örnektir; Ekim 2026 sonu itibarıyla kamuya açık haber ve aracı kurum raporlarından derlenmiştir. Yayınlamadan önce kendi görüşünüzle değiştirin.</p>
-<div class="tools"><input id="ara" type="search" placeholder="Örnek: hisse kodu" aria-label="Hisse ara"></div>
-<div class="grid" id="liste"></div>
-<p class="empty" id="bos" hidden>Aradığınız hisse için yorum bulunamadı.</p>
-</div></section>
-
-<section><div class="wrap">
-<div class="notice"><strong>Önemli uyarı:</strong> Bu sitedeki içerikler yalnızca genel bilgilendirme amacıyla hazırlanmıştır ve yatırım danışmanlığı değildir. Yatırım kararlarınızı kendi araştırmanıza ve risk durumunuza göre verin. Geçmiş performans gelecekteki sonuçların garantisi değildir.</div>
-</div></section>
-
-<section id="hakkimda" class="about"><div class="wrap">
-<h2>Hakkımda</h2>
-<p>Sermaye piyasaları alanında eğitim aldım ve piyasaları yıllardır yakından takip ediyorum. Günlük bültenleri ve hisse yorumlarını Telegram kanalımda da paylaşıyorum.</p>
-</div></section>
-
-<section id="iletisim"><div class="wrap">
-<h2>İletişim</h2>
-<p class="sub">Güncel paylaşımlar ve duyurular için Telegram kanalına katılabilirsiniz.</p>
-<a class="btn" href="https://t.me/piyasapusula1" rel="noopener">t.me/piyasapusula1</a>
-</div></section>
-</main>
-
-<footer><div class="wrap fr">
-<span>© <span id="yil">2026</span> Piyasa Pusula. Yatırım tavsiyesi değildir.</span>
-<button class="theme" id="tema" type="button">Temayı değiştir</button>
-</div></footer>
-
-<script>
-/* ====== BURAYI KENDİNİZE GÖRE DEĞİŞTİRİN ====== */
-var GUNLUK = {
-  tarih: "26–30 Ekim 2026 verileriyle örnek özet",
-  baslik: "BIST 100, 11.000 puan desteğini koruyabilecek mi?",
-  metin: "BIST 100, 26 Ekim’de %0,27 yükselişle 11.147 puandan kapandı. Endeks bir önceki hafta %5,16 değer kaybetmiş ve üst üste altıncı haftayı ekside bitirmişti. Aracı kurumlar 11.000, 10.800 ve 10.700 puanı destek olarak izliyor. TCMB’nin 22 Ekim’deki 100 baz puanlık faiz indirimi bankacılık gibi faize duyarlı sektörler için destekleyici görülüyor; üçüncü çeyrek bilanço sezonu ise hisse bazında ayrışmayı belirleyecek. Dış tarafta Brent petrol 30 Ekim’de 117 doların üzerinde, dolar/TL ise 49,95 civarında işlem gördü."
-};
-/* gorus: "olumlu", "temkinli" veya "izlemede" */
-var HISSELER = [
-  {kod:"ASELS", sirket:"Aselsan", tarih:"30 Ekim 2026", gorus:"izlemede", baslik:"Bilanço sonrası hedef fiyatlar birbirinden çok uzak", yorum:"Üçüncü çeyrek bilançosunun ardından 28 Ekim’de 15 aracı kurum hedef fiyat açıkladı. En düşük hedef 341 TL (“tut”), Vakıf Yatırım 580 TL (“al”) ve Gedik Yatırım 30 Ekim’de 594 TL (“endeks üstü getiri”) olarak açıkladı. Beklentilerin bu kadar dağınık olması, hissede kısa vadeli dalgalanmanın sürebileceğine işaret ediyor.", fiyat:"346,25 TL (30 Ekim)", aralik:"341 – 594 TL"},
-  {kod:"AKBNK", sirket:"Akbank", tarih:"30 Ekim 2026", gorus:"olumlu", baslik:"Faiz indirimi bankacılık hisselerine destek olabilir", yorum:"Akbank’ın 2026 ilk dokuz aylık solo net kârı 45,98 milyar TL oldu; önceki rakam 38,92 milyar TL idi. TCMB’nin 22 Ekim’deki 100 baz puanlık faiz indirimi bankacılık hisseleri için destekleyici bir unsur olarak görülüyor; bankacılık endeksi 26 Ekim’de yaklaşık %2 yükseldi. Faizlerin seyri ve bilanço sonrası kurum raporları takip edilmeli.", fiyat:"—", aralik:"—"},
-  {kod:"THYAO", sirket:"Türk Hava Yolları", tarih:"30 Ekim 2026", gorus:"temkinli", baslik:"Petrol fiyatı havayolu hisseleri için ana risk", yorum:"Brent petrol 30 Ekim’de 117 doların üzerinde işlem gördü; yakıt maliyeti havayolu şirketleri için temel risk. Info Yatırım’ın raporunda THY’nin ikinci çeyrekte FAVÖK’ünün %49, net kârının %71,5 gerilediği görülüyor. Hisse 19 Ekim’de 266 TL’den kapandı; kurum hedefleri petrol fiyatlarının seyrine göre değişebilir.", fiyat:"266 TL (19 Ekim)", aralik:"373,25 TL (Info Yatırım)"}
-];
-/* ============================================== */
-
-var gorusAd={olumlu:"Olumlu",temkinli:"Temkinli",izlemede:"İzlemede"};
-document.getElementById('yil').textContent=new Date().getFullYear();
-document.getElementById('bugun').textContent=GUNLUK.tarih||new Date().toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric',weekday:'long'});
-document.getElementById('gBaslik').textContent=GUNLUK.baslik;
-document.getElementById('gMetin').textContent=GUNLUK.metin;
-
-function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e}
-function ciz(q){
-  var liste=document.getElementById('liste');liste.textContent='';
-  q=(q||'').toLocaleLowerCase('tr-TR');
-  var n=0;
-  HISSELER.forEach(function(h){
-    if(q&&(h.kod+' '+h.sirket).toLocaleLowerCase('tr-TR').indexOf(q)<0)return;
-    n++;
-    var c=el('article','card'),top=el('div','top');
-    top.appendChild(el('span','kod',h.kod));top.appendChild(el('span','tarih',h.tarih));
-    c.appendChild(top);
-    c.appendChild(el('span','',h.sirket)).style.color='var(--muted)';
-    c.appendChild(el('span','tag '+h.gorus,gorusAd[h.gorus]||h.gorus));
-    c.appendChild(el('h3','',h.baslik));
-    c.appendChild(el('p','',h.yorum));
-    var lv=el('div','lv');lv.appendChild(el('span','','Son fiyat: '+h.fiyat));lv.appendChild(el('span','','Kurum hedefleri: '+h.aralik));
-    c.appendChild(lv);liste.appendChild(c);
-  });
-  document.getElementById('bos').hidden=n>0;
-}
-ciz('');
-document.getElementById('ara').addEventListener('input',function(e){ciz(e.target.value)});
-
-document.getElementById('tema').addEventListener('click',function(){
-  var r=document.documentElement;
-  var dark=r.getAttribute('data-theme')==='dark'||(r.getAttribute('data-theme')!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches);
-  r.setAttribute('data-theme',dark?'light':'dark');
-});
-</script>
+  <div class="topline"><div class="wrap"><span><strong>PIYASA PUSULASI</strong> &nbsp;·&nbsp; Veriye dayalı, sade finans</span><time id="updatedTop"></time></div></div>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#ana" aria-label="Piyasa Pusulası ana sayfa"><span class="brand-mark" aria-hidden="true">↗</span><span>Piyasa <span>Pusulası</span></span></a>
+      <nav class="navlinks" id="navlinks" aria-label="Ana menü"><a href="#analizler">Analizler</a><a href="#yorumlar">Uzman yorumları</a><a href="#hakkinda">Hakkında</a></nav>
+      <div class="nav-actions"><button class="icon-btn" id="themeToggle" type="button" aria-label="Renk temasını değiştir" title="Temayı değiştir">◐</button><button class="icon-btn menu-btn" id="menuToggle" type="button" aria-label="Menüyü aç" aria-expanded="false">☰</button></div>
+    </div>
+  </header>
+  <main id="ana">
+    <section class="hero"><div class="wrap hero-inner">
+      <div><div class="eyebrow">Piyasaları anlamak için</div><h1>Finans, <em>sade</em> bir dille.</h1><p class="hero-copy">Şirket bilançolarından faiz kararlarına, piyasayı etkileyen başlıkları sakin ve anlaşılır bir çerçevede ele alıyoruz.</p><div class="hero-ctas"><a class="button button-primary" href="#analizler">Analizleri keşfet <span aria-hidden="true">↓</span></a><a class="button button-outline" href="#yorumlar">Uzman yorumlarını oku</a></div><p class="hero-note">Bilgilendirme ve eğitim amaçlı içerikler · Yatırım tavsiyesi değildir</p></div>
+      <aside class="hero-aside" aria-label="Öne çıkan analiz"><div class="aside-label">Bu sayıda</div><div class="aside-title">Bilanço sezonunda rakamların arkasını okuyun.</div><p class="aside-text">Net kârın kaynağı, nakit akışı ve borç yapısı şirket değerlendirmesinde birlikte düşünülmeli.</p><div class="aside-stat"><span>İçerik türü</span><b>Rehber · Makro</b></div></aside>
+    </div></section>
+    <section class="section" id="analizler"><div class="wrap">
+      <div class="section-head"><div><div class="section-kicker">Piyasa notları</div><h2 class="section-title">Analiz ve rehberler</h2><p class="section-desc">Finansal konuları tek bir göstergeye indirgemeden, temel noktalarıyla değerlendirin.</p></div><div class="updated" id="updatedLabel">Güncelleme: —</div></div>
+      <div class="filters"><div class="chips" id="filters" aria-label="Analiz kategorileri"></div><label class="search"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="Başlık veya içerik ara…" aria-label="Analizlerde ara"></label></div>
+      <div class="analysis-grid" id="analysisGrid" aria-live="polite"></div>
+    </div></section>
+    <section class="section opinion-section" id="yorumlar"><div class="wrap">
+      <div class="section-head"><div><div class="section-kicker">Perspektifler</div><h2 class="section-title">Uzman yorumlarından</h2><p class="section-desc">Piyasa başlıklarına farklı açılardan bakın; kaynakları inceleyerek kendi değerlendirmenizi yapın.</p></div></div>
+      <div class="opinion-list" id="opinionList"></div>
+    </div></section>
+    <section class="section" id="hakkinda"><div class="wrap">
+      <div class="section-head"><div><div class="section-kicker">Şeffaflık notu</div><h2 class="section-title">Bilgi sunar, karar vermez.</h2><p class="section-desc">Piyasa Pusulası içerikleri finansal kavramları ve piyasa dinamiklerini anlaşılır kılmak için hazırlanır.</p></div></div>
+      <div class="disclaimer"><span class="disclaimer-icon" aria-hidden="true">ⓘ</span><p><strong>Önemli bilgilendirme:</strong> Bu sitedeki içerikler yalnızca genel bilgilendirme ve eğitim amaçlıdır; yatırım danışmanlığı, alım-satım önerisi veya getiri garantisi değildir. Yatırım kararlarınızı kendi araştırmanız ve risk değerlendirmeniz doğrultusunda verin. Geçmiş performans gelecekteki sonuçların göstergesi değildir.</p></div>
+    </div></section>
+  </main>
+  <footer><div class="wrap footer-inner"><div><div class="footer-brand">Piyasa <span>Pusulası</span></div><p class="footer-copy">© <span id="year"></span> Piyasa Pusulası · Bilgilendirme amaçlıdır.</p></div><a class="back-top" href="#ana">Başa dön ↑</a></div></footer>
+  <script id="content-data" type="application/json">
+  {
+    "updated":"24 Kasım 2026, 18:00",
+    "analyses":[
+      {"category":"Rehber","title":"Bilanço sezonunda nelere bakılmalı?","body":["Bilanço sezonunda ilk bakılacak şey net kârın nasıl oluştuğudur. Olağan faaliyetlerden gelen kâr ile tek seferlik kalemler ayrı değerlendirilmelidir.","Nakit akış tablosu, kârın gerçek nakde dönüşüp dönüşmediğini gösterir."],"points":["Faaliyet kârı ve net kâr arasındaki fark","İşletme nakit akışı ile kârın karşılaştırılması","Borç yapısı ve faiz giderleri"]},
+      {"category":"Makro","title":"Faiz kararları hisse fiyatlarını nasıl etkiler?","body":["Faiz artışları, gelecekteki nakit akışlarının bugünkü değerini düşürür. Bu, büyüme beklentisi yüksek şirketleri daha çok etkiler."],"points":["İskonto oranı ve değerleme","Sektörel farklılıklar","Enflasyon beklentisiyle birlikte okumak"]}
+    ],
+    "opinions":[
+      {"source":"Makro strateji notu","link_label":"Kaynağın adı","topic":"Faiz ve enflasyon","date":"24 Kasım 2026","summary":"Uzmanlar, enflasyon seyrine göre faiz beklentilerinin değişebileceğini ve bunun piyasa oynaklığını artırabileceğini vurguluyor.","link":"https://example.com/kaynak-1"},
+      {"source":"Değerleme yorumu","link_label":"Kaynağın adı","topic":"Büyüme hisseleri","date":"23 Kasım 2026","summary":"Yüksek büyüme beklentili şirketlerde değerlemenin faiz ortamına daha duyarlı olduğu sıkça tartışılıyor.","link":"https://example.com/kaynak-2"}
+    ]
+  }
+  </script>
+  <script>
+    (function(){
+      'use strict';
+      const data = JSON.parse(document.getElementById('content-data').textContent);
+      const esc = value => String(value == null ? '' : value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+      const grid = document.getElementById('analysisGrid');
+      const filterBox = document.getElementById('filters');
+      const search = document.getElementById('searchInput');
+      let activeCategory = 'Tümü';
+      const categories = ['Tümü', ...new Set(data.analyses.map(item => item.category))];
+      filterBox.innerHTML = categories.map(category => '<button class="chip" type="button" data-category="'+esc(category)+'" aria-pressed="'+(category === activeCategory)+'">'+esc(category)+'</button>').join('');
+      function renderAnalyses(){
+        const term = search.value.trim().toLocaleLowerCase('tr-TR');
+        const results = data.analyses.filter(item => (activeCategory === 'Tümü' || item.category === activeCategory) && (!term || [item.title,item.category,...item.body,...item.points].join(' ').toLocaleLowerCase('tr-TR').includes(term)));
+        grid.innerHTML = results.length ? results.map(item => '<article class="analysis-card"><div class="card-meta"><span class="category">'+esc(item.category)+'</span><span class="read-time">Piyasa Pusulası · Rehber</span></div><h3>'+esc(item.title)+'</h3>'+item.body.map(paragraph => '<p>'+esc(paragraph)+'</p>').join('')+'<ul class="points">'+item.points.map(point => '<li>'+esc(point)+'</li>').join('')+'</ul></article>').join('') : '<p class="empty">Aramanızla eşleşen bir analiz bulunamadı. Başka bir kelime deneyin.</p>';
+      }
+      filterBox.addEventListener('click', event => {const button = event.target.closest('[data-category]');if(!button)return;activeCategory=button.dataset.category;filterBox.querySelectorAll('button').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));renderAnalyses();});
+      search.addEventListener('input',renderAnalyses);
+      document.getElementById('opinionList').innerHTML = data.opinions.map(item => '<article class="opinion-card"><div class="opinion-top"><span class="source">'+esc(item.source)+'</span><time class="opinion-date">'+esc(item.date)+'</time></div><h3>'+esc(item.topic)+'</h3><p>'+esc(item.summary)+'</p><a class="source-link" href="'+esc(item.link)+'" target="_blank" rel="noopener noreferrer">'+esc(item.link_label)+' <span aria-hidden="true">↗</span></a></article>').join('');
+      document.getElementById('updatedTop').textContent='Güncellendi · '+data.updated;
+      document.getElementById('updatedLabel').textContent='Güncelleme: '+data.updated;
+      document.getElementById('year').textContent=new Date().getFullYear();
+      renderAnalyses();
+      const root=document.documentElement;const savedTheme=localStorage.getItem('pp-theme');if(savedTheme==='dark'||savedTheme==='light')root.dataset.theme=savedTheme;
+      document.getElementById('themeToggle').addEventListener('click',()=>{const next=root.dataset.theme==='dark'?'light':'dark';root.dataset.theme=next;localStorage.setItem('pp-theme',next);});
+      const menu=document.getElementById('navlinks'), menuButton=document.getElementById('menuToggle');
+      menuButton.addEventListener('click',()=>{const open=menu.classList.toggle('open');menuButton.setAttribute('aria-expanded',String(open));menuButton.setAttribute('aria-label',open?'Menüyü kapat':'Menüyü aç');});
+      menu.addEventListener('click',event=>{if(event.target.closest('a')){menu.classList.remove('open');menuButton.setAttribute('aria-expanded','false');}});
+    })();
+  </script>
 </body>
 </html>
