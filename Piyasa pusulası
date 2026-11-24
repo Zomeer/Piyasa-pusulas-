@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Piyasa Pusula</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--bg:#f6f3ec;--card:#fff;--ink:#1d2430;--muted:#5d6675;--accent:#0f6e5a;--warn:#b45309;--up:#15803d;--down:#b91c1c;--line:#e4dfd3;color-scheme:light}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#14171c;--card:#1e232b;--ink:#e8ebf0;--muted:#9aa3b2;--accent:#2fbf9f;--warn:#f0a040;--up:#4ade80;--down:#f87171;--line:#2c323c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14171c;--card:#1e232b;--ink:#e8ebf0;--muted:#9aa3b2;--accent:#2fbf9f;--warn:#f0a040;--up:#4ade80;--down:#f87171;--line:#2c323c;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);padding-top:env(safe-area-inset-top,0px)}
+header{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line);padding:12px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{font-weight:800;font-size:20px}.logo span{color:var(--accent)}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+nav a{color:var(--muted);text-decoration:none;font-size:13px;padding:6px 10px;border-radius:999px}
+nav a:hover{background:var(--line);color:var(--ink)}
+main{max-width:1180px;margin:0 auto;padding:24px 20px 60px}
+section{margin-bottom:44px}
+h2{font-size:22px;margin:0 0 6px}
+.lead{color:var(--muted);margin:0 0 18px;font-size:15px}
+.eyebrow{color:var(--warn);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.hero{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:14px;padding:28px}
+.hero h1{margin:6px 0 10px;font-size:30px;line-height:1.2}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;cursor:pointer;transition:border-color .15s,transform .15s}
+.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.card h3{margin:4px 0 8px;font-size:17px}
+.card p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+.tag{display:inline-block;font-size:11px;font-weight:700;color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent);padding:3px 8px;border-radius:999px}
+.more{margin-top:12px;font-size:13px;font-weight:700;color:var(--accent)}
+.detail{grid-column:1/-1;background:var(--card);border:1px solid var(--accent);border-radius:12px;padding:22px;display:none}
+.detail.open{display:block}
+.detail h3{margin:0 0 10px;font-size:19px}
+.detail h4{margin:18px 0 6px;font-size:15px;color:var(--accent)}
+.detail p,.detail li{color:var(--ink);font-size:14.5px;line-height:1.65}
+.detail ul{padding-left:20px;margin:6px 0}
+.close{float:right;background:none;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:4px 10px;cursor:pointer;font:inherit;font-size:13px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:12px 0}
+.kpi{background:var(--bg);border-radius:10px;padding:12px}
+.kpi b{display:block;font-size:20px}.kpi small{color:var(--muted);font-size:12px}
+.up{color:var(--up)}.down{color:var(--down)}
+.chartbox{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.toolbar button,.filters button{background:var(--card);border:1px solid var(--line);color:var(--ink);padding:6px 12px;border-radius:999px;cursor:pointer;font:inherit;font-size:13px}
+.toolbar button.active,.filters button.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.quote{border-left:3px solid var(--warn);padding:4px 0 4px 14px;margin:12px 0;color:var(--ink);font-size:14px}
+.quote small{display:block;color:var(--muted);margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:9px 6px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:600;font-size:12px}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.notice{font-size:13px;color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:12px;margin-top:14px}
+footer{color:var(--muted);font-size:12px;text-align:center;padding:20px;border-top:1px solid var(--line)}
+@media (max-width:640px){.hero h1{font-size:24px}nav{margin-left:0}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Piyasa <span>Pusula</span></div>
+  <nav>
+    <a href="#piyasa">Piyasa</a>
+    <a href="#grafik">Grafik</a>
+    <a href="#analiz">Analiz</a>
+    <a href="#egitim">Eğitim</a>
+    <a href="#gorusler">Görüşler</a>
+    <a href="#sozluk">Terimler</a>
+  </nav>
+</header>
+
+<main>
+
+<section>
+  <div class="hero">
+    <div class="eyebrow">Finans okuryazarlığı</div>
+    <h1>Piyasaları anlamak için bir pusula</h1>
+    <p class="lead" style="margin:0">Canlı piyasa özeti, derinlemesine analizler, eğitim içerikleri ve uzman görüşleri. Bir kartı tıklayarak detayına inebilirsin.</p>
+  </div>
+</section>
+
+<section id="piyasa">
+  <div class="eyebrow">Canlı piyasa</div>
+  <h2>Piyasa özeti</h2>
+  <p class="lead">Veriler, sayfayla birlikte yayınlanan <code>data.json</code> dosyasından okunur. Yerel örnek veri gösteriliyor.</p>
+  <div class="grid" id="marketGrid"></div>
+  <div class="notice" id="dataStatus">Veri durumu yükleniyor...</div>
+</section>
+
+<section id="grafik">
+  <div class="eyebrow">Grafik</div>
+  <h2>Fiyat hareketi</h2>
+  <p class="lead">Varlık ve zaman aralığını seçerek grafiği değiştirebilirsin.</p>
+  <div class="chartbox">
+    <div class="toolbar" id="assetButtons"></div>
+    <div class="toolbar" id="rangeButtons"></div>
+    <canvas id="priceChart" height="110"></canvas>
+  </div>
+</section>
+
+<section id="analiz">
+  <div class="eyebrow">Analiz</div>
+  <h2>Analizler ve rehberler</h2>
+  <p class="lead">Bir kartı tıkla, konuyu başlıklarıyla birlikte açalım.</p>
+  <div class="filters" id="analysisFilters"></div>
+  <div class="grid" id="analysisGrid"></div>
+</section>
+
+<section id="egitim">
+  <div class="eyebrow">Eğitim</div>
+  <h2>Öğrenme yolu</h2>
+  <p class="lead">Temelden başlayıp adım adım ilerleyen modüller.</p>
+  <div class="grid" id="courseGrid"></div>
+</section>
+
+<section id="gorusler">
+  <div class="eyebrow">Uzman görüşleri</div>
+  <h2>Görüşler ve özetler</h2>
+  <p class="lead">Kaynaklar özetlenir ve bağlantısı belirtilir. Metinler birebir alınmaz.</p>
+  <div class="grid" id="opinionGrid"></div>
+</section>
+
+<section id="sozluk">
+  <div class="eyebrow">Sözlük</div>
+  <h2>Temel terimler</h2>
+  <p class="lead">Piyasa dilini tanımak için kısa tanımlar.</p>
+  <div class="grid" id="glossaryGrid"></div>
+</section>
+
+</main>
+
+<footer>
+  Bu sayfadaki içerik yalnızca eğitim ve bilgilendirme amaçlıdır; yatırım tavsiyesi değildir.
+</footer>
+
+<script>
+// ---------- Sample data (replaced by data.json when available) ----------
+const SAMPLE = {
+  market: [
+    {name:"USD/TRY", value:"50,62", change:"+0,03", pct:"+0,06%", up:true},
+    {name:"Altın (ons)", value:"3.626", change:"-8,04", pct:"-0,22%", up:false},
+    {name:"Bitcoin", value:"60.356", change:"-854", pct:"-1,40%", up:false},
+    {name:"BIST 100", value:"10.240", change:"+62", pct:"+0,61%", up:true},
+    {name:"Nasdaq 100", value:"26.259", change:"-515", pct:"-1,92%", up:false},
+    {name:"DAX", value:"24.180", change:"+91", pct:"+0,38%", up:true}
+  ],
+  series: {
+    "USD/TRY": [50.1,50.2,50.3,50.25,50.4,50.5,50.62],
+    "Altın (ons)": [3650,3660,3642,3638,3640,3634,3626],
+    "Bitcoin": [61200,60800,61500,60100,60900,61000,60356],
+    "BIST 100": [9980,10050,10010,10120,10090,10180,10240]
+  },
+  analyses: [
+    {cat:"Rehber", title:"Bilanço sezonunda nelere bakılmalı?", summary:"Kâr rakamından önce kârın kaynağına bakmak.", body:[
+      "Bilanço sezonunda ilk bakılacak şey net kârın nasıl oluştuğudur. Olağan faaliyetlerden gelen kâr ile tek seferlik kalemler ayrı değerlendirilmelidir.",
+      "Nakit akışı tablosu, kârın gerçek nakde dönüşüp dönüşmediğini gösterir. Kâr yüksek ama işletme nakit akışı negatifse dikkat gerekir."],
+      points:["Faaliyet kârı ve net kâr arasındaki fark","İşletme nakit akışı ile kârın karşılaştırılması","Borç yapısı ve faiz giderleri","Tek seferlik gelir kalemleri"]},
+    {cat:"Makro", title:"Faiz kararları hisse fiyatlarını nasıl etkiler?", summary:"Politika faizi, iskonto oranı ve değerleme ilişkisi.", body:[
+      "Merkez bankası faizleri yükseltince gelecekteki nakit akışlarının bugünkü değeri düşer. Bu, özellikle büyüme beklentisi yüksek şirketleri etkiler.",
+      "Borçlu şirketler faiz artışında finansman maliyetiyle baskı görür. Bankacılık hisseleri ise farklı tepki verebilir."],
+      points:["İskonto oranı ve değerleme","Sektörel farklılıklar","Enflasyon beklentisiyle birlikte okumak","Risk iştahı ve sermaye akışı"]},
+    {cat:"Risk", title:"Kaldıraç ve pozisyon büyüklüğü", summary:"Kayıpları kontrol altında tutmanın temel ilkeleri.", body:[
+      "Kaldıraç kazancı da kaybı da büyütür. Pozisyon büyüklüğü, tek bir işlemin sermayenin ne kadarını tehdit ettiğini belirler.",
+      "Zarar durdurma seviyesi, işleme girmeden önce belirlenmeli ve duygusal olarak değil planla uygulanmalıdır."],
+      points:["Sermayenin yüzde kaçı tek işlemde riske girer?","Zarar durdurma nasıl belirlenir?","Kaldıraçla gelen gecelik maliyetler","Psikolojik tuzaklar"]},
+    {cat:"Teknik", title:"Hareketli ortalamalar nasıl okunur?", summary:"Trend yönünü ve destek-direnç bölgelerini anlamak.", body:[
+      "Hareketli ortalamalar fiyatın gürültüsünü azaltır ve trendin yönünü gösterir. Kısa ve uzun ortalamaların kesişimi farklı zaman dilimlerinde farklı anlam taşır.",
+      "Tek başına bir gösterge yanıltıcı olabilir; hacim ve temel verilerle birlikte değerlendirmek gerekir."],
+      points:["Basit ve üssel hareketli ortalama farkı","Kesişim sinyallerinin sınırları","Destek ve direnç kavramı","Hacimle teyit"]},
+    {cat:"Temel", title:"Değerleme çarpanları: F/K ve PD/DD", summary:"Çarpanları karşılaştırırken sektör ve büyümeyi hesaba katmak.", body:[
+      "F/K, fiyatın hisse başı kâra oranıdır. PD/DD ise piyasa değerinin defter değerine oranıdır. İkisi de tek başına anlamlı değildir.",
+      "Düşük çarpan her zaman ucuzluk anlamına gelmez; kârın sürdürülebilirliği ve büyüme beklentisi birlikte okunmalıdır."],
+      points:["Sektör ortalamasıyla kıyas","Büyüme ve çarpan ilişkisi","Döngüsel şirketlerde tuzak","Defter değerinin anlamı"]}
+  ],
+  courses:[
+    {title:"Finansa giriş", level:"Başlangıç", lessons:["Piyasa nasıl çalışır?","Hisse, tahvil ve fon farkları","Enflasyon ve reel getiri","Bileşik getirinin gücü"]},
+    {title:"Tablo okuma", level:"Başlangıç", lessons:["Bilanço nedir?","Gelir tablosu","Nakit akış tablosu","Oranlarla kıyaslama"]},
+    {title:"Teknik analize giriş", level:"Orta", lessons:["Mum grafikleri","Trend ve destek-direnç","Hareketli ortalamalar","Hacim analizi"]},
+    {title:"Risk yönetimi", level:"Orta", lessons:["Çeşitlendirme","Pozisyon büyüklüğü","Zarar durdurma","Kendini tanıma"]}
+  ],
+  opinions:[
+    {who:"Makro strateji notu", topic:"Faiz ve enflasyon", text:"Uzmanlar, enflasyonun seyrine göre faiz beklentilerinin değişebileceğini ve bunun piyasa oynaklığını artırabileceğini vurgular.", src:"Kaynak bağlantısı eklenecek"},
+    {who:"Değerleme yorumu", topic:"Büyüme hisseleri", text:"Yüksek büyüme beklentili şirketlerde değerlemenin, faiz ortamına daha duyarlı olduğu sıkça tartışılır.", src:"Kaynak bağlantısı eklenecek"},
+    {who:"Davranışsal finans", topic:"Yatırımcı psikolojisi", text:"Araştırmalar, yatırımcıların kayıplara duyarlılığının karar süreçlerini sık sık bozduğunu gösteriyor.", src:"Kaynak bağlantısı eklenecek"}
+  ],
+  glossary:[
+    {t:"Kaldıraç", d:"Aracı kurumdan borçlanarak daha büyük pozisyon açma. Kazancı da kaybı da büyütür."},
+    {t:"F/K", d:"Fiyatın hisse başı kâra oranı. Değerlemede en yaygın kullanılan çarpanlardan biri."},
+    {t:"Hareketli ortalama", d:"Belirli bir dönemdeki kapanış fiyatlarının ortalaması. Trendi göstermek için kullanılır."},
+    {t:"Enflasyon", d:"Genel fiyat düzeyindeki sürekli artış. Paranın alım gücünü azaltır."},
+    {t:"Likidite", d:"Bir varlığın fiyatını ciddi bir değişim olmadan hızlıca alıp satabilme kolaylığı."},
+    {t:"Temettü", d:"Şirketin kârından hissedarlara ödediği pay."}
+  ]
+};
+
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let DATA = SAMPLE;
+
+// ---------- Market cards ----------
+function renderMarket(){
+  document.getElementById("marketGrid").innerHTML = DATA.market.map(m => `
+    <div class="card">
+      <span class="tag">${esc(m.name)}</span>
+      <h3>${esc(m.value)}</h3>
+      <p class="${m.up?'up':'down'}">${esc(m.change)} (${esc(m.pct)})</p>
+    </div>`).join("");
+}
+
+// ---------- Chart ----------
+let chart = null, currentAsset = Object.keys(DATA.series)[0], currentRange = "Tümü";
+const RANGES = ["1G","1H","1A","Tümü"];
+function renderChartButtons(){
+  document.getElementById("assetButtons").innerHTML = Object.keys(DATA.series).map(a =>
+    `<button class="${a===currentAsset?'active':''}" data-a="${esc(a)}">${esc(a)}</button>`).join("");
+  document.getElementById("rangeButtons").innerHTML = RANGES.map(r =>
+    `<button class="${r===currentRange?'active':''}" data-r="${r}">${r}</button>`).join("");
+}
+function drawChart(){
+  const full = DATA.series[currentAsset] || [];
+  const slice = currentRange==="Tümü" ? full : full.slice(-({ "1G":2,"1H":4,"1A":6 }[currentRange]));
+  const labels = slice.map((_,i)=>i+1);
+  if (chart) chart.destroy();
+  chart = new Chart(document.getElementById("priceChart"), {
+    type:"line",
+    data:{labels, datasets:[{label:currentAsset, data:slice, borderColor:"#0f6e5a", backgroundColor:"rgba(15,110,90,.12)", fill:true, tension:.3, pointRadius:0}]},
+    options:{responsive:true, plugins:{legend:{display:false}}, scales:{x:{display:false}}}
+  });
+}
+document.addEventListener("click", e => {
+  const a = e.target.closest("[data-a]"), r = e.target.closest("[data-r]");
+  if (a){ currentAsset = a.dataset.a; renderChartButtons(); drawChart(); }
+  if (r){ currentRange = r.dataset.r; renderChartButtons(); drawChart(); }
+});
+
+// ---------- Expandable cards ----------
+function openDetail(card, html){
+  document.querySelectorAll(".detail").forEach(d => d.remove());
+  const d = document.createElement("div");
+  d.className = "detail open";
+  d.innerHTML = `<button class="close" onclick="this.parentElement.remove()">Kapat</button>` + html;
+  card.after(d);
+  d.scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+
+let analysisFilter = "Tümü";
+function renderAnalysis(){
+  const cats = ["Tümü", ...new Set(DATA.analyses.map(a=>a.cat))];
+  document.getElementById("analysisFilters").innerHTML = cats.map(c =>
+    `<button class="${c===analysisFilter?'active':''}" data-cat="${esc(c)}">${esc(c)}</button>`).join("");
+  const list = DATA.analyses.filter(a => analysisFilter==="Tümü" || a.cat===analysisFilter);
+  const grid = document.getElementById("analysisGrid");
+  grid.innerHTML = list.map((a,i) => `
+    <div class="card" data-idx="${DATA.analyses.indexOf(a)}">
+      <span class="tag">${esc(a.cat)}</span>
+      <h3>${esc(a.title)}</h3>
+      <p>${esc(a.summary)}</p>
+      <div class="more">Detayı aç →</div>
+    </div>`).join("");
+}
+document.addEventListener("click", e => {
+  const f = e.target.closest("[data-cat]");
+  if (f){ analysisFilter = f.dataset.cat; renderAnalysis(); return; }
+  const c = e.target.closest("#analysisGrid .card");
+  if (c){
+    const a = DATA.analyses[+c.dataset.idx];
+    openDetail(c, `<h3>${esc(a.title)}</h3>
+      ${a.body.map(p=>`<p>${esc(p)}</p>`).join("")}
+      <h4>Bu konuda öğrenilecekler</h4>
+      <ul>${a.points.map(p=>`<li>${esc(p)}</li>`).join("")}</ul>`);
+  }
+  const k = e.target.closest("#courseGrid .card");
+  if (k){
+    const c = DATA.courses[+k.dataset.idx];
+    openDetail(k, `<h3>${esc(c.title)} <span class="tag">${esc(c.level)}</span></h3>
+      <h4>Dersler</h4><ol>${c.lessons.map(l=>`<li>${esc(l)}</li>`).join("")}</ol>`);
+  }
+  const o = e.target.closest("#opinionGrid .card");
+  if (o){
+    const op = DATA.opinions[+o.dataset.idx];
+    openDetail(o, `<h3>${esc(op.who)}</h3>
+      <p><b>Konu:</b> ${esc(op.topic)}</p>
+      <div class="quote">${esc(op.text)}<small>${esc(op.src)}</small></div>
+      <p class="notice">Bu özet bir yorum notudur, yatırım tavsiyesi değildir.</p>`);
+  }
+});
+
+function renderCourses(){
+  document.getElementById("courseGrid").innerHTML = DATA.courses.map((c,i)=>`
+    <div class="card" data-idx="${i}">
+      <span class="tag">${esc(c.level)}</span>
+      <h3>${esc(c.title)}</h3>
+      <p>${c.lessons.length} ders</p>
+      <div class="more">Dersleri gör →</div>
+    </div>`).join("");
+}
+function renderOpinions(){
+  document.getElementById("opinionGrid").innerHTML = DATA.opinions.map((o,i)=>`
+    <div class="card" data-idx="${i}">
+      <span class="tag">${esc(o.topic)}</span>
+      <h3>${esc(o.who)}</h3>
+      <p>${esc(o.text)}</p>
+      <div class="more">Devamını oku →</div>
+    </div>`).join("");
+}
+function renderGlossary(){
+  document.getElementById("glossaryGrid").innerHTML = DATA.glossary.map(g=>`
+    <div class="card"><h3>${esc(g.t)}</h3><p>${esc(g.d)}</p></div>`).join("");
+}
+
+// ---------- Live data (data.json, if the site is served with it) ----------
+async function loadData(){
+  try{
+    const r = await fetch("data.json", {cache:"no-store"});
+    if(!r.ok) throw new Error(r.status);
+    const j = await r.json();
+    DATA = {...SAMPLE, ...j};
+    document.getElementById("dataStatus").textContent = "Veri güncellendi: " + (j.updated || "bilinmiyor");
+  }catch(err){
+    document.getElementById("dataStatus").textContent = "Canlı veri bulunamadı, örnek veri gösteriliyor.";
+  }
+  renderAll();
+}
+function renderAll(){
+  renderMarket(); renderChartButtons(); drawChart();
+  renderAnalysis(); renderCourses(); renderOpinions(); renderGlossary();
+}
+loadData();
+// Refresh market data every 5 minutes when served as a live site
+setInterval(loadData, 5*60*1000);
+</script>
+</body>
+</html>
