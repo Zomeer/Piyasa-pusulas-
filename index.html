@@ -1,101 +1,363 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101d2b">
-  <meta name="description" content="Piyasa Pusulası: finansal tabloları, makro gelişmeleri ve piyasa yorumlarını sade bir dille takip edin.">
-  <title>Piyasa Pusulası — Finans, sade bir dille</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root{color-scheme:light;--bg:#f4f3ef;--paper:#fff;--paper-soft:#f8f7f3;--ink:#172538;--muted:#667383;--line:#e4e5e2;--navy:#101d2b;--navy-soft:#182a3b;--gold:#e4b45c;--gold-deep:#9b6a1e;--teal:#168577;--shadow:0 18px 55px rgba(20,35,50,.08);--radius:18px}
-    :root[data-theme="dark"]{color-scheme:dark;--bg:#0d1722;--paper:#142231;--paper-soft:#192a3a;--ink:#edf2f6;--muted:#a4b2bf;--line:#293a49;--navy:#09121c;--navy-soft:#122231;--gold:#f0c36d;--gold-deep:#f0c36d;--teal:#56c5b2;--shadow:0 18px 55px rgba(0,0,0,.2)}
-    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;background:var(--bg);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;line-height:1.65}a{color:inherit}button,input{font:inherit}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:3px}.wrap{width:min(1120px,calc(100% - 40px));margin-inline:auto}
-    .topline{background:var(--navy);color:#eaf0f4;font-size:.8rem}.topline .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0}.topline strong{color:var(--gold);font-weight:700}.topline time{color:#bdc8d1}
-    header{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--paper) 94%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}.nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{display:flex;align-items:center;gap:11px;text-decoration:none;font-family:Manrope,sans-serif;font-weight:800;letter-spacing:-.04em;font-size:1.15rem;white-space:nowrap}.brand-mark{display:grid;place-items:center;width:37px;height:37px;border-radius:12px;background:var(--navy);color:var(--gold);font-size:1.15rem}.brand span:last-child{color:var(--teal)}.navlinks{display:flex;align-items:center;gap:25px}.navlinks a{text-decoration:none;color:var(--muted);font-size:.9rem;font-weight:600}.navlinks a:hover{color:var(--ink)}.nav-actions{display:flex;align-items:center;gap:10px}.icon-btn{width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--paper);color:var(--ink);cursor:pointer}.menu-btn{display:none}
-    .hero{position:relative;overflow:hidden;background:var(--navy);color:#f5f5f1;padding:76px 0 64px}.hero:after{content:"";position:absolute;width:470px;height:470px;border:1px solid rgba(228,180,92,.16);border-radius:50%;right:-135px;top:-190px;box-shadow:0 0 0 48px rgba(228,180,92,.025),0 0 0 96px rgba(228,180,92,.025)}.hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:1.25fr .75fr;align-items:center;gap:60px}.eyebrow{display:flex;align-items:center;gap:9px;color:var(--gold);font-weight:700;font-size:.76rem;letter-spacing:.13em;text-transform:uppercase}.eyebrow:before{content:"";width:25px;height:1px;background:currentColor}h1,h2,h3,p{margin-top:0}h1,h2,h3{font-family:Manrope,"DM Sans",sans-serif}h1{max-width:740px;font-size:clamp(2.6rem,6.1vw,5.25rem);line-height:1.02;letter-spacing:-.065em;margin:19px 0 20px}h1 em{font-style:normal;color:var(--gold)}.hero-copy{max-width:570px;color:#c0cbd3;font-size:1.08rem;margin-bottom:28px}.hero-ctas{display:flex;flex-wrap:wrap;gap:11px}.button{display:inline-flex;justify-content:center;align-items:center;gap:8px;text-decoration:none;border:1px solid transparent;border-radius:999px;padding:12px 19px;font-weight:700;font-size:.9rem;transition:transform .18s,background .18s}.button:hover{transform:translateY(-2px)}.button-primary{background:var(--gold);color:#172538}.button-outline{border-color:#506070;color:#f5f5f1}.hero-note{margin-top:18px;color:#98a8b5;font-size:.78rem}.hero-aside{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.045);border-radius:var(--radius);padding:24px}.aside-label{color:var(--gold);font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;font-weight:700}.aside-title{font:700 1.24rem/1.35 Manrope,sans-serif;margin:9px 0 10px}.aside-text{font-size:.88rem;color:#c0cbd3;margin-bottom:18px}.aside-stat{display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid rgba(255,255,255,.15);font-size:.82rem;color:#b9c5ce}.aside-stat b{color:#fff}
-    .section{padding:76px 0}.section-head{display:flex;align-items:end;justify-content:space-between;gap:22px;margin-bottom:26px}.section-kicker{color:var(--teal);font-size:.75rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase;margin-bottom:7px}.section-title{font-size:clamp(1.7rem,3.8vw,2.55rem);line-height:1.14;letter-spacing:-.05em;margin:0}.section-desc{max-width:560px;color:var(--muted);margin:10px 0 0}.updated{white-space:nowrap;color:var(--muted);font-size:.8rem;border:1px solid var(--line);background:var(--paper);padding:8px 12px;border-radius:999px}
-    .filters{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:20px}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:var(--paper);color:var(--muted);border-radius:999px;padding:8px 14px;cursor:pointer;font-size:.82rem;font-weight:700}.chip[aria-pressed="true"],.chip:hover{background:var(--navy);border-color:var(--navy);color:#fff}.search{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:999px;background:var(--paper);padding:0 14px;min-width:min(100%,260px)}.search input{width:100%;border:0;outline:0;background:transparent;color:var(--ink);padding:10px 0;font-size:.85rem}.search input:focus-visible{outline:0}.analysis-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.analysis-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:25px;box-shadow:0 4px 18px rgba(20,35,50,.025);transition:transform .2s,box-shadow .2s}.analysis-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}.card-meta{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:16px}.category{color:var(--teal);background:color-mix(in srgb,var(--teal) 10%,var(--paper));border-radius:999px;padding:5px 10px;font-size:.72rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase}.read-time{color:var(--muted);font-size:.76rem}.analysis-card h3{font-size:1.32rem;line-height:1.28;letter-spacing:-.035em;margin:0 0 13px}.analysis-card p{color:var(--muted);font-size:.92rem;margin:0 0 12px}.points{list-style:none;padding:0;margin:18px 0 0;border-top:1px solid var(--line)}.points li{position:relative;padding:11px 0 11px 23px;border-bottom:1px solid var(--line);font-size:.86rem}.points li:last-child{border-bottom:0;padding-bottom:0}.points li:before{content:"↗";position:absolute;left:0;top:10px;color:var(--gold-deep);font-weight:800}.empty{grid-column:1/-1;color:var(--muted);padding:30px;text-align:center;border:1px dashed var(--line);border-radius:var(--radius)}
-    .opinion-section{background:var(--paper-soft);border-block:1px solid var(--line)}.opinion-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.opinion-card{display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:23px}.opinion-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}.source{font-size:.78rem;font-weight:700;color:var(--teal)}.opinion-date{font-size:.75rem;color:var(--muted)}.opinion-card h3{font-size:1.22rem;letter-spacing:-.035em;margin:0 0 10px}.opinion-card p{font-size:.9rem;color:var(--muted);margin:0 0 20px}.source-link{margin-top:auto;display:inline-flex;align-items:center;gap:7px;color:var(--gold-deep);font-size:.83rem;font-weight:800;text-decoration:none}.source-link:hover{text-decoration:underline}.disclaimer{display:flex;gap:15px;align-items:flex-start;border:1px solid color-mix(in srgb,var(--gold) 55%,var(--line));background:color-mix(in srgb,var(--gold) 9%,var(--paper));border-radius:14px;padding:18px 20px}.disclaimer-icon{color:var(--gold-deep);font-size:1.2rem}.disclaimer p{color:var(--muted);font-size:.82rem;margin:0}.disclaimer strong{color:var(--ink)}
-    footer{background:var(--navy);color:#d5dde3;padding:34px 0}.footer-inner{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}.footer-brand{font-family:Manrope,sans-serif;font-weight:800}.footer-brand span{color:var(--gold)}.footer-copy{font-size:.78rem;color:#9eacb8;margin:5px 0 0}.back-top{color:var(--gold);font-size:.82rem;text-decoration:none;font-weight:700}
-    @media(max-width:850px){.hero-inner{grid-template-columns:1fr;gap:30px}.hero-aside{max-width:560px}.navlinks{gap:15px}.navlinks a{font-size:.82rem}}
-    @media(max-width:680px){.wrap{width:min(100% - 30px,1120px)}.topline .wrap{font-size:.72rem}.nav{min-height:66px}.navlinks{display:none;position:absolute;left:0;right:0;top:66px;padding:14px 20px 20px;background:var(--paper);border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;gap:0}.navlinks.open{display:flex}.navlinks a{padding:11px 4px;border-bottom:1px solid var(--line);font-size:.9rem}.menu-btn{display:inline-grid;place-items:center}.hero{padding:58px 0 48px}.hero-inner{gap:26px}h1{font-size:clamp(2.65rem,13vw,4rem)}.hero-copy{font-size:1rem}.section{padding:56px 0}.section-head{align-items:flex-start;flex-direction:column}.analysis-grid,.opinion-list{grid-template-columns:1fr}.analysis-card{padding:21px}.filters{align-items:stretch}.search{width:100%}.updated{white-space:normal}.footer-inner{align-items:flex-start;flex-direction:column}}
-    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Piyasa Pusulası | Finans Analiz ve Eğitim</title>
+<meta name="description" content="Piyasa Pusulası: günlük piyasa bültenleri, analizler ve finans okuryazarlığı eğitimi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #070d1a;
+    --bg-2: #0c1528;
+    --panel: #111c33;
+    --panel-2: #16233f;
+    --line: rgba(212, 175, 55, 0.14);
+    --gold: #d4af37;
+    --gold-soft: #f1d77a;
+    --text: #e8edf7;
+    --muted: #8a97b3;
+    --up: #22c55e;
+    --down: #ef4444;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: radial-gradient(1200px 600px at 80% -10%, rgba(212,175,55,0.08), transparent 60%),
+                radial-gradient(900px 500px at -10% 20%, rgba(59,130,246,0.07), transparent 60%),
+                var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  .container { width: min(1180px, 92%); margin: 0 auto; }
+
+  /* Üst bant */
+  .ticker {
+    background: #050a14;
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 13px;
+  }
+  .ticker-track {
+    display: inline-flex;
+    gap: 40px;
+    padding: 9px 0;
+    animation: scroll 40s linear infinite;
+  }
+  .ticker-item { display: inline-flex; gap: 8px; align-items: center; }
+  .ticker-item b { color: var(--text); font-weight: 600; }
+  .up { color: var(--up); }
+  .down { color: var(--down); }
+  @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* Menü */
+  header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(7, 13, 26, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 72px;
+  }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-mark {
+    width: 40px; height: 40px; border-radius: 50%;
+    border: 1.5px solid var(--gold);
+    display: grid; place-items: center;
+    position: relative;
+  }
+  .logo-mark::after {
+    content: ""; width: 3px; height: 18px;
+    background: linear-gradient(var(--gold-soft), var(--gold));
+    transform: rotate(35deg);
+    border-radius: 2px;
+  }
+  .logo-text { font-family: 'Playfair Display', serif; font-weight: 800; letter-spacing: 0.04em; font-size: 18px; }
+  .logo-text span { display: block; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 10px; letter-spacing: 0.3em; color: var(--gold); }
+  .menu { display: flex; gap: 28px; font-size: 14px; color: var(--muted); }
+  .menu a:hover { color: var(--gold-soft); }
+  .menu-btn {
+    display: none; background: none; border: 1px solid var(--line);
+    color: var(--text); padding: 8px 12px; border-radius: 8px; cursor: pointer;
+  }
+  .cta {
+    background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+    color: #1a1400; font-weight: 700; padding: 10px 18px;
+    border-radius: 10px; font-size: 14px;
+  }
+
+  /* Hero */
+  .hero { padding: 90px 0 70px; text-align: center; position: relative; }
+  .eyebrow {
+    display: inline-block; font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold); border: 1px solid var(--line); padding: 6px 14px; border-radius: 999px;
+    margin-bottom: 26px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(38px, 6vw, 68px);
+    line-height: 1.1; font-weight: 800; margin-bottom: 22px;
+  }
+  .hero h1 em { font-style: normal; background: linear-gradient(120deg, var(--gold-soft), var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p { max-width: 640px; margin: 0 auto 34px; color: var(--muted); font-size: 17px; }
+  .btn-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    padding: 14px 26px; border-radius: 12px; font-weight: 600; font-size: 15px;
+    border: 1px solid var(--line); transition: transform .2s, background .2s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary { background: linear-gradient(135deg, var(--gold-soft), var(--gold)); color: #1a1400; border: none; }
+  .btn-ghost { background: rgba(255,255,255,0.03); }
+
+  /* Kartlar */
+  section { padding: 70px 0; }
+  .section-head { display: flex; justify-content: space-between; align-items: end; margin-bottom: 30px; gap: 20px; flex-wrap: wrap; }
+  .section-head h2 { font-family: 'Playfair Display', serif; font-size: clamp(26px, 3.5vw, 38px); }
+  .section-head p { color: var(--muted); font-size: 15px; max-width: 480px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card {
+    background: linear-gradient(180deg, var(--panel), var(--bg-2));
+    border: 1px solid var(--line); border-radius: 16px; padding: 24px;
+    transition: transform .25s, border-color .25s;
+  }
+  .card:hover { transform: translateY(-4px); border-color: rgba(212,175,55,0.4); }
+  .stat-label { font-size: 13px; color: var(--muted); }
+  .stat-value { font-size: 28px; font-weight: 700; margin: 6px 0 4px; }
+  .stat-change { font-size: 14px; font-weight: 600; }
+
+  .tag { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); }
+  .card h3 { font-size: 20px; margin: 10px 0; line-height: 1.35; }
+  .card p { color: var(--muted); font-size: 14.5px; }
+  .meta { margin-top: 16px; font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; }
+
+  .feature-icon {
+    width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center;
+    background: rgba(212,175,55,0.1); color: var(--gold); font-size: 20px; margin-bottom: 18px;
+  }
+
+  .band {
+    background: linear-gradient(120deg, #111c33, #0a1224);
+    border: 1px solid var(--line); border-radius: 22px;
+    padding: 50px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center;
+  }
+  .band h2 { font-family: 'Playfair Display', serif; font-size: clamp(26px, 3.4vw, 36px); margin-bottom: 14px; }
+  .band p { color: var(--muted); }
+  .checklist { list-style: none; display: grid; gap: 12px; }
+  .checklist li { padding-left: 28px; position: relative; color: var(--text); font-size: 15px; }
+  .checklist li::before { content: "✓"; position: absolute; left: 0; color: var(--gold); font-weight: 700; }
+
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+  .about-card p { margin-bottom: 14px; color: var(--muted); }
+  .contact-item { display: flex; gap: 12px; margin-bottom: 14px; color: var(--text); }
+  .contact-item span { color: var(--muted); min-width: 90px; }
+
+  footer { border-top: 1px solid var(--line); padding: 40px 0 30px; color: var(--muted); font-size: 13px; }
+  .disclaimer { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: 12px; padding: 16px 18px; margin-bottom: 26px; font-size: 13px; color: #d6b4b4; }
+  .foot-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+
+  /* Mobil */
+  @media (max-width: 900px) {
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: 1fr; }
+    .band, .about-grid { grid-template-columns: 1fr; padding: 32px; }
+  }
+  @media (max-width: 720px) {
+    .menu { display: none; }
+    .menu.open {
+      display: flex; flex-direction: column; position: absolute; top: 72px; left: 0; right: 0;
+      background: var(--bg-2); padding: 20px 4%; border-bottom: 1px solid var(--line);
+    }
+    .menu-btn { display: block; }
+    .grid-4 { grid-template-columns: 1fr; }
+    .hero { padding: 60px 0 50px; }
+  }
+</style>
 </head>
 <body>
-  <div class="topline"><div class="wrap"><span><strong>PIYASA PUSULASI</strong> &nbsp;·&nbsp; Veriye dayalı, sade finans</span><time id="updatedTop"></time></div></div>
-  <header>
-    <div class="wrap nav">
-      <a class="brand" href="#ana" aria-label="Piyasa Pusulası ana sayfa"><span class="brand-mark" aria-hidden="true">↗</span><span>Piyasa <span>Pusulası</span></span></a>
-      <nav class="navlinks" id="navlinks" aria-label="Ana menü"><a href="#analizler">Analizler</a><a href="#yorumlar">Uzman yorumları</a><a href="#hakkinda">Hakkında</a></nav>
-      <div class="nav-actions"><button class="icon-btn" id="themeToggle" type="button" aria-label="Renk temasını değiştir" title="Temayı değiştir">◐</button><button class="icon-btn menu-btn" id="menuToggle" type="button" aria-label="Menüyü aç" aria-expanded="false">☰</button></div>
+
+<div class="ticker">
+  <div class="ticker-track" id="ticker"></div>
+</div>
+
+<header>
+  <div class="container nav">
+    <a href="#" class="logo">
+      <div class="logo-mark"></div>
+      <div class="logo-text">PİYASA PUSULASI<span>FİNANS ANALİZ</span></div>
+    </a>
+    <nav class="menu" id="menu">
+      <a href="#bultenler">Bültenler</a>
+      <a href="#sinyaller">Sinyaller</a>
+      <a href="#egitim">Eğitim</a>
+      <a href="#hakkinda">Hakkında</a>
+      <a href="#iletisim">İletişim</a>
+    </nav>
+    <div style="display:flex; gap:12px; align-items:center;">
+      <a href="https://t.me/piyasapusula1" target="_blank" rel="noopener" class="cta">Telegram</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Menü">☰</button>
     </div>
-  </header>
-  <main id="ana">
-    <section class="hero"><div class="wrap hero-inner">
-      <div><div class="eyebrow">Piyasaları anlamak için</div><h1>Finans, <em>sade</em> bir dille.</h1><p class="hero-copy">Şirket bilançolarından faiz kararlarına, piyasayı etkileyen başlıkları sakin ve anlaşılır bir çerçevede ele alıyoruz.</p><div class="hero-ctas"><a class="button button-primary" href="#analizler">Analizleri keşfet <span aria-hidden="true">↓</span></a><a class="button button-outline" href="#yorumlar">Uzman yorumlarını oku</a></div><p class="hero-note">Bilgilendirme ve eğitim amaçlı içerikler · Yatırım tavsiyesi değildir</p></div>
-      <aside class="hero-aside" aria-label="Öne çıkan analiz"><div class="aside-label">Bu sayıda</div><div class="aside-title">Bilanço sezonunda rakamların arkasını okuyun.</div><p class="aside-text">Net kârın kaynağı, nakit akışı ve borç yapısı şirket değerlendirmesinde birlikte düşünülmeli.</p><div class="aside-stat"><span>İçerik türü</span><b>Rehber · Makro</b></div></aside>
-    </div></section>
-    <section class="section" id="analizler"><div class="wrap">
-      <div class="section-head"><div><div class="section-kicker">Piyasa notları</div><h2 class="section-title">Analiz ve rehberler</h2><p class="section-desc">Finansal konuları tek bir göstergeye indirgemeden, temel noktalarıyla değerlendirin.</p></div><div class="updated" id="updatedLabel">Güncelleme: —</div></div>
-      <div class="filters"><div class="chips" id="filters" aria-label="Analiz kategorileri"></div><label class="search"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="Başlık veya içerik ara…" aria-label="Analizlerde ara"></label></div>
-      <div class="analysis-grid" id="analysisGrid" aria-live="polite"></div>
-    </div></section>
-    <section class="section opinion-section" id="yorumlar"><div class="wrap">
-      <div class="section-head"><div><div class="section-kicker">Perspektifler</div><h2 class="section-title">Uzman yorumlarından</h2><p class="section-desc">Piyasa başlıklarına farklı açılardan bakın; kaynakları inceleyerek kendi değerlendirmenizi yapın.</p></div></div>
-      <div class="opinion-list" id="opinionList"></div>
-    </div></section>
-    <section class="section" id="hakkinda"><div class="wrap">
-      <div class="section-head"><div><div class="section-kicker">Şeffaflık notu</div><h2 class="section-title">Bilgi sunar, karar vermez.</h2><p class="section-desc">Piyasa Pusulası içerikleri finansal kavramları ve piyasa dinamiklerini anlaşılır kılmak için hazırlanır.</p></div></div>
-      <div class="disclaimer"><span class="disclaimer-icon" aria-hidden="true">ⓘ</span><p><strong>Önemli bilgilendirme:</strong> Bu sitedeki içerikler yalnızca genel bilgilendirme ve eğitim amaçlıdır; yatırım danışmanlığı, alım-satım önerisi veya getiri garantisi değildir. Yatırım kararlarınızı kendi araştırmanız ve risk değerlendirmeniz doğrultusunda verin. Geçmiş performans gelecekteki sonuçların göstergesi değildir.</p></div>
-    </div></section>
-  </main>
-  <footer><div class="wrap footer-inner"><div><div class="footer-brand">Piyasa <span>Pusulası</span></div><p class="footer-copy">© <span id="year"></span> Piyasa Pusulası · Bilgilendirme amaçlıdır.</p></div><a class="back-top" href="#ana">Başa dön ↑</a></div></footer>
-  <script id="content-data" type="application/json">
-  {
-    "updated":"24 Kasım 2026, 18:00",
-    "analyses":[
-      {"category":"Rehber","title":"Bilanço sezonunda nelere bakılmalı?","body":["Bilanço sezonunda ilk bakılacak şey net kârın nasıl oluştuğudur. Olağan faaliyetlerden gelen kâr ile tek seferlik kalemler ayrı değerlendirilmelidir.","Nakit akış tablosu, kârın gerçek nakde dönüşüp dönüşmediğini gösterir."],"points":["Faaliyet kârı ve net kâr arasındaki fark","İşletme nakit akışı ile kârın karşılaştırılması","Borç yapısı ve faiz giderleri"]},
-      {"category":"Makro","title":"Faiz kararları hisse fiyatlarını nasıl etkiler?","body":["Faiz artışları, gelecekteki nakit akışlarının bugünkü değerini düşürür. Bu, büyüme beklentisi yüksek şirketleri daha çok etkiler."],"points":["İskonto oranı ve değerleme","Sektörel farklılıklar","Enflasyon beklentisiyle birlikte okumak"]}
-    ],
-    "opinions":[
-      {"source":"Makro strateji notu","link_label":"Kaynağın adı","topic":"Faiz ve enflasyon","date":"24 Kasım 2026","summary":"Uzmanlar, enflasyon seyrine göre faiz beklentilerinin değişebileceğini ve bunun piyasa oynaklığını artırabileceğini vurguluyor.","link":"https://example.com/kaynak-1"},
-      {"source":"Değerleme yorumu","link_label":"Kaynağın adı","topic":"Büyüme hisseleri","date":"23 Kasım 2026","summary":"Yüksek büyüme beklentili şirketlerde değerlemenin faiz ortamına daha duyarlı olduğu sıkça tartışılıyor.","link":"https://example.com/kaynak-2"}
-    ]
-  }
-  </script>
-  <script>
-    (function(){
-      'use strict';
-      const data = JSON.parse(document.getElementById('content-data').textContent);
-      const esc = value => String(value == null ? '' : value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-      const grid = document.getElementById('analysisGrid');
-      const filterBox = document.getElementById('filters');
-      const search = document.getElementById('searchInput');
-      let activeCategory = 'Tümü';
-      const categories = ['Tümü', ...new Set(data.analyses.map(item => item.category))];
-      filterBox.innerHTML = categories.map(category => '<button class="chip" type="button" data-category="'+esc(category)+'" aria-pressed="'+(category === activeCategory)+'">'+esc(category)+'</button>').join('');
-      function renderAnalyses(){
-        const term = search.value.trim().toLocaleLowerCase('tr-TR');
-        const results = data.analyses.filter(item => (activeCategory === 'Tümü' || item.category === activeCategory) && (!term || [item.title,item.category,...item.body,...item.points].join(' ').toLocaleLowerCase('tr-TR').includes(term)));
-        grid.innerHTML = results.length ? results.map(item => '<article class="analysis-card"><div class="card-meta"><span class="category">'+esc(item.category)+'</span><span class="read-time">Piyasa Pusulası · Rehber</span></div><h3>'+esc(item.title)+'</h3>'+item.body.map(paragraph => '<p>'+esc(paragraph)+'</p>').join('')+'<ul class="points">'+item.points.map(point => '<li>'+esc(point)+'</li>').join('')+'</ul></article>').join('') : '<p class="empty">Aramanızla eşleşen bir analiz bulunamadı. Başka bir kelime deneyin.</p>';
-      }
-      filterBox.addEventListener('click', event => {const button = event.target.closest('[data-category]');if(!button)return;activeCategory=button.dataset.category;filterBox.querySelectorAll('button').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));renderAnalyses();});
-      search.addEventListener('input',renderAnalyses);
-      document.getElementById('opinionList').innerHTML = data.opinions.map(item => '<article class="opinion-card"><div class="opinion-top"><span class="source">'+esc(item.source)+'</span><time class="opinion-date">'+esc(item.date)+'</time></div><h3>'+esc(item.topic)+'</h3><p>'+esc(item.summary)+'</p><a class="source-link" href="'+esc(item.link)+'" target="_blank" rel="noopener noreferrer">'+esc(item.link_label)+' <span aria-hidden="true">↗</span></a></article>').join('');
-      document.getElementById('updatedTop').textContent='Güncellendi · '+data.updated;
-      document.getElementById('updatedLabel').textContent='Güncelleme: '+data.updated;
-      document.getElementById('year').textContent=new Date().getFullYear();
-      renderAnalyses();
-      const root=document.documentElement;const savedTheme=localStorage.getItem('pp-theme');if(savedTheme==='dark'||savedTheme==='light')root.dataset.theme=savedTheme;
-      document.getElementById('themeToggle').addEventListener('click',()=>{const next=root.dataset.theme==='dark'?'light':'dark';root.dataset.theme=next;localStorage.setItem('pp-theme',next);});
-      const menu=document.getElementById('navlinks'), menuButton=document.getElementById('menuToggle');
-      menuButton.addEventListener('click',()=>{const open=menu.classList.toggle('open');menuButton.setAttribute('aria-expanded',String(open));menuButton.setAttribute('aria-label',open?'Menüyü kapat':'Menüyü aç');});
-      menu.addEventListener('click',event=>{if(event.target.closest('a')){menu.classList.remove('open');menuButton.setAttribute('aria-expanded','false');}});
-    })();
-  </script>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="container">
+      <span class="eyebrow">Disiplinli Piyasa Takibi</span>
+      <h1>Piyasalarda <em>yönünüzü</em> kaybetmeyin</h1>
+      <p>Günlük bültenler, teknik ve temel analizler ile finans okuryazarlığı eğitimleri. Veriyi anlamlandırıp size net bir çerçeve sunuyoruz.</p>
+      <div class="btn-row">
+        <a href="https://t.me/piyasapusula1" target="_blank" rel="noopener" class="btn btn-primary">Telegram'a Katıl</a>
+        <a href="#egitim" class="btn btn-ghost">Ücretsiz Eğitim</a>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0;">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="tag">Piyasa Özeti</span>
+          <h2>Bugünün Görünümü</h2>
+        </div>
+        <p>Aşağıdaki değerler örnek amaçlıdır, canlı veri değildir.</p>
+      </div>
+      <div class="grid-4">
+        <div class="card"><div class="stat-label">BIST 100</div><div class="stat-value">9.845,20</div><div class="stat-change up">▲ %0,82</div></div>
+        <div class="card"><div class="stat-label">USD / TRY</div><div class="stat-value">36,12</div><div class="stat-change up">▲ %0,15</div></div>
+        <div class="card"><div class="stat-label">Gram Altın</div><div class="stat-value">3.150,40</div><div class="stat-change down">▼ %0,34</div></div>
+        <div class="card"><div class="stat-label">Bitcoin</div><div class="stat-value">$92.400</div><div class="stat-change up">▲ %1,27</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="bultenler">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="tag">Bültenler</span>
+          <h2>Son Piyasa Bültenleri</h2>
+        </div>
+        <p>Her iş günü piyasa açılışından önce yayınlanan kısa ve net özetler.</p>
+      </div>
+      <div class="grid-3">
+        <article class="card">
+          <span class="tag">Günlük Bülten</span>
+          <h3>Açılış öncesi küresel görünüm ve kritik seviyeler</h3>
+          <p>Küresel endeksler, döviz ve emtia hareketlerinin Borsa İstanbul üzerindeki olası etkilerini özetliyoruz.</p>
+          <div class="meta"><span>Bu hafta</span><span>5 dk okuma</span></div>
+        </article>
+        <article class="card">
+          <span class="tag">Haftalık Analiz</span>
+          <h3>Haftanın öne çıkan gelişmeleri ve takvim</h3>
+          <p>Önemli veri açıklamaları, faiz kararları ve şirket bilançolarını tek sayfada topluyoruz.</p>
+          <div class="meta"><span>Bu hafta</span><span>8 dk okuma</span></div>
+        </article>
+        <article class="card">
+          <span class="tag">Teknik Görünüm</span>
+          <h3>Ana endekslerde destek ve direnç seviyeleri</h3>
+          <p>Trend, hacim ve momentum göstergelerini sade bir dille yorumluyoruz.</p>
+          <div class="meta"><span>Bu hafta</span><span>6 dk okuma</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="sinyaller">
+    <div class="container band">
+      <div>
+        <span class="tag">Sinyaller</span>
+        <h2>Disiplin, sinyalden önce gelir</h2>
+        <p>Sinyallerimizi tek başına bir alım-satım kararı olarak değil, kendi risk planınızın bir parçası olarak sunuyoruz. Her sinyalde giriş, stop ve hedef seviyeleri ile gerekçeler yer alır.</p>
+      </div>
+      <ul class="checklist">
+        <li>Risk yönetimi öncelikli yaklaşım</li>
+        <li>Net giriş, stop ve hedef seviyeleri</li>
+        <li>Gerekçesi açıklanmış teknik ve temel analiz</li>
+        <li>Sonuçların şeffaf takibi</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="egitim">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="tag">Eğitim</span>
+          <h2>Finans Okuryazarlığı</h2>
+        </div>
+        <p>Sermayeniz ne olursa olsun, doğru temelle başlamak mümkün.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card"><div class="feature-icon">📘</div><h3>Temel Kavramlar</h3><p>Hisse, tahvil, enflasyon, faiz ve kaldıraç gibi temel kavramların sade anlatımı.</p></div>
+        <div class="card"><div class="feature-icon">📊</div><h3>Teknik Analiz</h3><p>Grafik okuma, trend ve destek-direnç mantığı, uygulamalı örneklerle.</p></div>
+        <div class="card"><div class="feature-icon">🛡️</div><h3>Risk Yönetimi</h3><p>Pozisyon büyüklüğü, zarar durdurma ve portföy çeşitlendirmesi üzerine çalışmalar.</p></div>
+      </div>
+      <div style="margin-top:30px; text-align:center;">
+        <a href="https://t.me/piyasapusula1" target="_blank" rel="noopener" class="btn btn-primary">Ücretsiz Canlı Yayınlara Katıl</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="hakkinda">
+    <div class="container about-grid">
+      <div class="card about-card">
+        <span class="tag">Hakkında</span>
+        <h2 style="font-family:'Playfair Display',serif; font-size:30px; margin:12px 0 18px;">Piyasa Pusulası</h2>
+        <p>Piyasa Pusulası, yatırımcıların piyasaları daha bilinçli takip edebilmesi için kurulmuş bir finans analiz ve eğitim platformudur.</p>
+        <p>Amacımız hızlı kazanç vaat etmek değil; veriyi doğru okumak, riski görünür kılmak ve disiplinli bir yaklaşım geliştirmenize yardımcı olmaktır.</p>
+      </div>
+      <div class="card" id="iletisim">
+        <span class="tag">İletişim</span>
+        <h2 style="font-family:'Playfair Display',serif; font-size:30px; margin:12px 0 18px;">Bizimle İletişime Geçin</h2>
+        <div class="contact-item"><span>Telegram</span><a href="https://t.me/piyasapusula1" target="_blank" rel="noopener" style="color:var(--gold-soft);">t.me/piyasapusula1</a></div>
+        <div class="contact-item"><span>Web</span><a href="https://deltan1capital.org" target="_blank" rel="noopener" style="color:var(--gold-soft);">deltan1capital.org</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="disclaimer">
+      <strong>Yasal Uyarı:</strong> Bu sitede yer alan içerikler yalnızca bilgilendirme amaçlıdır ve yatırım danışmanlığı, yatırım tavsiyesi veya alım-satım önerisi niteliği taşımaz. Yatırım kararlarının sorumluluğu okuyucuya aittir.
+    </div>
+    <div class="foot-row">
+      <span>© 2026 Piyasa Pusulası. Tüm hakları saklıdır.</span>
+      <span>Yatırımlarınızla ilgili kararlardan önce bağımsız bir uzmana danışın.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Üst bant: örnek veriler (canlı veri değildir)
+  const tickerData = [
+    { name: "BIST 100", value: "9.845,20", change: "+0,82%", up: true },
+    { name: "USD/TRY", value: "36,12", change: "+0,15%", up: true },
+    { name: "EUR/TRY", value: "38,40", change: "-0,21%", up: false },
+    { name: "Altın (ons)", value: "$2.685", change: "+0,44%", up: true },
+    { name: "Gümüş", value: "$31,20", change: "-0,58%", up: false },
+    { name: "Bitcoin", value: "$92.400", change: "+1,27%", up: true },
+    { name: "Brent Petrol", value: "$74,10", change: "-0,33%", up: false }
+  ];
+  const track = document.getElementById("ticker");
+  const items = [...tickerData, ...tickerData].map(d =>
+    `<span class="ticker-item">${d.name} <b>${d.value}</b> <span class="${d.up ? 'up' : 'down'}">${d.up ? '▲' : '▼'} ${d.change}</span></span>`
+  ).join("");
+  track.innerHTML = items;
+
+  // Mobil menü
+  const btn = document.getElementById("menuBtn");
+  const menu = document.getElementById("menu");
+  btn.addEventListener("click", () => menu.classList.toggle("open"));
+  menu.querySelectorAll("a").forEach(a => a.addEventListener("click", () => menu.classList.remove("open")));
+</script>
 </body>
 </html>
