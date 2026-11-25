@@ -1,363 +1,243 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Piyasa Pusulası | Finans Analiz ve Eğitim</title>
-<meta name="description" content="Piyasa Pusulası: günlük piyasa bültenleri, analizler ve finans okuryazarlığı eğitimi.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #070d1a;
-    --bg-2: #0c1528;
-    --panel: #111c33;
-    --panel-2: #16233f;
-    --line: rgba(212, 175, 55, 0.14);
-    --gold: #d4af37;
-    --gold-soft: #f1d77a;
-    --text: #e8edf7;
-    --muted: #8a97b3;
-    --up: #22c55e;
-    --down: #ef4444;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: 'Inter', system-ui, sans-serif;
-    background: radial-gradient(1200px 600px at 80% -10%, rgba(212,175,55,0.08), transparent 60%),
-                radial-gradient(900px 500px at -10% 20%, rgba(59,130,246,0.07), transparent 60%),
-                var(--bg);
-    color: var(--text);
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
-  a { color: inherit; text-decoration: none; }
-  .container { width: min(1180px, 92%); margin: 0 auto; }
+from pathlib import Path
+import shutil, zipfile, os, re, json, textwrap
 
-  /* Üst bant */
-  .ticker {
-    background: #050a14;
-    border-bottom: 1px solid var(--line);
-    overflow: hidden;
-    white-space: nowrap;
-    font-size: 13px;
-  }
-  .ticker-track {
-    display: inline-flex;
-    gap: 40px;
-    padding: 9px 0;
-    animation: scroll 40s linear infinite;
-  }
-  .ticker-item { display: inline-flex; gap: 8px; align-items: center; }
-  .ticker-item b { color: var(--text); font-weight: 600; }
-  .up { color: var(--up); }
-  .down { color: var(--down); }
-  @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+root = Path("/mnt/data/ppwork/piyasa-pusulasi-guncel")
+panel = root / "panel" / "index.html"
+s = panel.read_text(encoding="utf-8")
 
-  /* Menü */
-  header {
-    position: sticky; top: 0; z-index: 50;
-    background: rgba(7, 13, 26, 0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--line);
-  }
-  .nav {
-    display: flex; align-items: center; justify-content: space-between;
-    height: 72px;
-  }
-  .logo { display: flex; align-items: center; gap: 12px; }
-  .logo-mark {
-    width: 40px; height: 40px; border-radius: 50%;
-    border: 1.5px solid var(--gold);
-    display: grid; place-items: center;
-    position: relative;
-  }
-  .logo-mark::after {
-    content: ""; width: 3px; height: 18px;
-    background: linear-gradient(var(--gold-soft), var(--gold));
-    transform: rotate(35deg);
-    border-radius: 2px;
-  }
-  .logo-text { font-family: 'Playfair Display', serif; font-weight: 800; letter-spacing: 0.04em; font-size: 18px; }
-  .logo-text span { display: block; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 10px; letter-spacing: 0.3em; color: var(--gold); }
-  .menu { display: flex; gap: 28px; font-size: 14px; color: var(--muted); }
-  .menu a:hover { color: var(--gold-soft); }
-  .menu-btn {
-    display: none; background: none; border: 1px solid var(--line);
-    color: var(--text); padding: 8px 12px; border-radius: 8px; cursor: pointer;
-  }
-  .cta {
-    background: linear-gradient(135deg, var(--gold-soft), var(--gold));
-    color: #1a1400; font-weight: 700; padding: 10px 18px;
-    border-radius: 10px; font-size: 14px;
-  }
+# Promote the integrated dashboard to the single public entry point.
+s = s.replace("<title>Piyasa Pusula | Dashboard</title>",
+'''<title>Piyasa Pusulası — 2027 Yeni Nesil Piyasa Terminali</title>
+<meta name="description" content="Piyasa Pusulası: BIST, altın, gümüş, döviz, emtia, ABD endeksleri ve kripto piyasaları için grafikler, analizler ve finans rehberi.">
+<meta name="theme-color" content="#07111f">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Piyasa Pusulası — Yeni Nesil Piyasa Terminali">
+<meta property="og:description" content="Piyasaları tek ekrandan takip edin. Grafikler, analizler ve piyasa notları.">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://s3.tradingview.com" crossorigin>
+<link rel="preconnect" href="https://www.tradingview.com" crossorigin>''')
 
-  /* Hero */
-  .hero { padding: 90px 0 70px; text-align: center; position: relative; }
-  .eyebrow {
-    display: inline-block; font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase;
-    color: var(--gold); border: 1px solid var(--line); padding: 6px 14px; border-radius: 999px;
-    margin-bottom: 26px;
-  }
-  .hero h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(38px, 6vw, 68px);
-    line-height: 1.1; font-weight: 800; margin-bottom: 22px;
-  }
-  .hero h1 em { font-style: normal; background: linear-gradient(120deg, var(--gold-soft), var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .hero p { max-width: 640px; margin: 0 auto 34px; color: var(--muted); font-size: 17px; }
-  .btn-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-  .btn {
-    padding: 14px 26px; border-radius: 12px; font-weight: 600; font-size: 15px;
-    border: 1px solid var(--line); transition: transform .2s, background .2s;
-  }
-  .btn:hover { transform: translateY(-2px); }
-  .btn-primary { background: linear-gradient(135deg, var(--gold-soft), var(--gold)); color: #1a1400; border: none; }
-  .btn-ghost { background: rgba(255,255,255,0.03); }
+# Remove cross-page navigation button and its style.
+s = re.sub(r'<style>\\s*\\.pp-main-link\\{.*?</style>\\s*', '', s, flags=re.S)
+s = s.replace('<a class="pp-main-link" href="/">← Piyasa Pusulası ana site</a>', '')
 
-  /* Kartlar */
-  section { padding: 70px 0; }
-  .section-head { display: flex; justify-content: space-between; align-items: end; margin-bottom: 30px; gap: 20px; flex-wrap: wrap; }
-  .section-head h2 { font-family: 'Playfair Display', serif; font-size: clamp(26px, 3.5vw, 38px); }
-  .section-head p { color: var(--muted); font-size: 15px; max-width: 480px; }
-  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
-  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  .card {
-    background: linear-gradient(180deg, var(--panel), var(--bg-2));
-    border: 1px solid var(--line); border-radius: 16px; padding: 24px;
-    transition: transform .25s, border-color .25s;
-  }
-  .card:hover { transform: translateY(-4px); border-color: rgba(212,175,55,0.4); }
-  .stat-label { font-size: 13px; color: var(--muted); }
-  .stat-value { font-size: 28px; font-weight: 700; margin: 6px 0 4px; }
-  .stat-change { font-size: 14px; font-weight: 600; }
+# Add a clear hero / terminal introduction inside the one-page experience.
+hero = '''
+  <section class="pp-hero" id="terminal-giris">
+    <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div>
+    <div class="hero-copy">
+      <div class="hero-kicker"><span class="live-pulse"></span> PIYASA INTELLIGENCE · 2027</div>
+      <h1>Piyasaların nabzı.<br><span>Tek bir merkezde.</span></h1>
+      <p>BIST’ten altına, küresel endekslerden kripto varlıklara kadar piyasaları takip edin; grafikleri inceleyin, analizleri okuyun ve kendi karar sürecinizi güçlendirin.</p>
+      <div class="hero-actions">
+        <a class="hero-primary" href="#grafik-lab">Terminali keşfet <span>↗</span></a>
+        <a class="hero-secondary" href="#yazilar">Analizleri incele</a>
+      </div>
+      <div class="hero-metrics">
+        <div><strong>GLOBAL</strong><span>Çoklu piyasa takibi</span></div>
+        <div><strong>LIVE CHARTS</strong><span>TradingView grafikleri</span></div>
+        <div><strong>INSIGHT</strong><span>Analiz ve eğitim</span></div>
+      </div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="visual-ring ring-a"></div><div class="visual-ring ring-b"></div>
+      <div class="visual-core"><span>PP</span><small>MARKET<br>INTELLIGENCE</small></div>
+      <div class="visual-chip chip-a">XAU / USD <b>GOLD</b></div>
+      <div class="visual-chip chip-b">BIST 100 <b>TR</b></div>
+      <div class="visual-chip chip-c">NASDAQ <b>US</b></div>
+    </div>
+  </section>
+'''
+s = s.replace('<main>\\n  <div class="card daily" id="daily"></div>', '<main>\\n' + hero + '\\n  <div class="card daily" id="daily"></div>')
 
-  .tag { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); }
-  .card h3 { font-size: 20px; margin: 10px 0; line-height: 1.35; }
-  .card p { color: var(--muted); font-size: 14.5px; }
-  .meta { margin-top: 16px; font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; }
+# Update footer year and add a modern footer before body close if no footer exists.
+if '</footer>' not in s:
+    s = s.replace('</main>', '''</main>
+<footer class="pp-footer">
+  <div><b>PIYASA <span>PUSULASI</span></b><p>Veriyle düşün. Disiplinle hareket et.</p></div>
+  <div class="footer-links"><a href="#ana">Ana sayfa</a><a href="#grafik-lab">Piyasa terminali</a><a href="#yazilar">Analizler</a><a href="https://t.me/piyasapusula1" target="_blank" rel="noopener">Telegram</a></div>
+  <small>© <span id="ppYear">2027</span> Piyasa Pusulası · Bilgilendirme amaçlıdır, yatırım danışmanlığı değildir.</small>
+</footer>''', 1)
 
-  .feature-icon {
-    width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center;
-    background: rgba(212,175,55,0.1); color: var(--gold); font-size: 20px; margin-bottom: 18px;
-  }
-
-  .band {
-    background: linear-gradient(120deg, #111c33, #0a1224);
-    border: 1px solid var(--line); border-radius: 22px;
-    padding: 50px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center;
-  }
-  .band h2 { font-family: 'Playfair Display', serif; font-size: clamp(26px, 3.4vw, 36px); margin-bottom: 14px; }
-  .band p { color: var(--muted); }
-  .checklist { list-style: none; display: grid; gap: 12px; }
-  .checklist li { padding-left: 28px; position: relative; color: var(--text); font-size: 15px; }
-  .checklist li::before { content: "✓"; position: absolute; left: 0; color: var(--gold); font-weight: 700; }
-
-  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
-  .about-card p { margin-bottom: 14px; color: var(--muted); }
-  .contact-item { display: flex; gap: 12px; margin-bottom: 14px; color: var(--text); }
-  .contact-item span { color: var(--muted); min-width: 90px; }
-
-  footer { border-top: 1px solid var(--line); padding: 40px 0 30px; color: var(--muted); font-size: 13px; }
-  .disclaimer { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: 12px; padding: 16px 18px; margin-bottom: 26px; font-size: 13px; color: #d6b4b4; }
-  .foot-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
-
-  /* Mobil */
-  @media (max-width: 900px) {
-    .grid-4 { grid-template-columns: repeat(2, 1fr); }
-    .grid-3 { grid-template-columns: 1fr; }
-    .band, .about-grid { grid-template-columns: 1fr; padding: 32px; }
-  }
-  @media (max-width: 720px) {
-    .menu { display: none; }
-    .menu.open {
-      display: flex; flex-direction: column; position: absolute; top: 72px; left: 0; right: 0;
-      background: var(--bg-2); padding: 20px 4%; border-bottom: 1px solid var(--line);
-    }
-    .menu-btn { display: block; }
-    .grid-4 { grid-template-columns: 1fr; }
-    .hero { padding: 60px 0 50px; }
-  }
+# Add polished 2027 visual system; appended after existing styles so it safely overrides.
+modern_css = r'''
+<style id="pp-2027-design">
+:root{
+ --bg:#070d18;--panel:#0d1727;--panel2:#111f33;--border:rgba(148,173,207,.16);
+ --text:#edf4ff;--muted:#91a4bf;--accent:#55e0c0;--accent2:#d8ad65;
+ --up:#51dfa9;--down:#ff7185;--shadow:0 24px 70px rgba(0,0,0,.34);
+ --glow:0 0 38px rgba(85,224,192,.12)
+}
+body{background:radial-gradient(ellipse at 15% -10%,rgba(30,91,125,.26),transparent 38%),radial-gradient(ellipse at 90% 8%,rgba(92,65,143,.18),transparent 32%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:.005em}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.12;background-image:linear-gradient(rgba(151,180,210,.10) 1px,transparent 1px),linear-gradient(90deg,rgba(151,180,210,.10) 1px,transparent 1px);background-size:54px 54px;mask-image:linear-gradient(to bottom,black,transparent 72%)}
+header{background:rgba(7,13,24,.82);backdrop-filter:blur(22px);border-bottom:1px solid var(--border)}
+.head{max-width:1440px;padding:15px 26px}
+.logo{font-size:1.12rem;letter-spacing:.12em;text-transform:uppercase}
+.logo span,.pp-footer b span{color:var(--accent)}
+.search{background:rgba(255,255,255,.045);border-color:var(--border);color:var(--text);border-radius:12px}
+.btn{background:linear-gradient(135deg,#55e0c0,#36bfae);color:#04131a;border-radius:11px;box-shadow:0 8px 24px rgba(85,224,192,.12)}
+.btn.ghost{background:rgba(255,255,255,.035);color:var(--text);border-color:var(--border);box-shadow:none}
+nav.sub{max-width:1440px;border-color:var(--border);scrollbar-width:thin}
+nav.sub a{font-size:.72rem;font-weight:700;letter-spacing:.11em;padding:13px 15px}
+nav.sub a:hover{color:var(--accent);border-color:var(--accent)}
+main{max-width:1440px;padding:26px 26px 76px}
+.card,.market-lab .market-card{background:linear-gradient(145deg,rgba(17,31,51,.96),rgba(10,19,33,.96));border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow)}
+.acard,.li,.poll-opt{background:rgba(255,255,255,.035);border-color:var(--border);border-radius:15px}
+.acard{transition:transform .22s,border-color .22s,box-shadow .22s}
+.acard:hover{transform:translateY(-4px);border-color:rgba(85,224,192,.55);box-shadow:var(--glow)}
+.label{color:var(--accent);font-size:.68rem;letter-spacing:.16em}
+h2.t{letter-spacing:-.025em}
+.feat h2{font-size:clamp(1.5rem,3vw,2.25rem);letter-spacing:-.04em}
+.meta,.market-note,.lab-sub{color:var(--muted)}
+.market-lab .chart-frame{border:1px solid var(--border);background:#07111f;border-radius:15px}
+.market-lab .market-tabs button,.market-lab .time-tabs button{background:rgba(255,255,255,.04);border-color:var(--border);color:var(--muted);border-radius:10px}
+.market-lab .market-tabs button.active,.market-lab .time-tabs button.active{background:var(--accent);color:#04131a;border-color:var(--accent)}
+.market-lab .automation-note{background:rgba(255,255,255,.035);border-color:var(--border);border-radius:14px}
+.podcast{background:linear-gradient(145deg,#152a42,#091321);border:1px solid var(--border);border-radius:20px}
+.podcast .cover{background:radial-gradient(circle at 70% 20%,#f0d39c,#a8793b 45%,#1a2e43 100%);border:1px solid rgba(255,255,255,.18);border-radius:14px}
+.chip{background:rgba(255,255,255,.035);border-color:var(--border);color:var(--muted);border-radius:10px}
+.chip.on,.chip:hover{color:var(--accent);border-color:var(--accent)}
+#drawer,#admin{background:#08111f;color:var(--text)}
+#drawer{border-color:var(--border)}
+#admin .card{background:var(--panel)}
+#login .card{background:var(--panel)}
+.cookies{background:#101d30;border-color:var(--border)}
+.disclaimer{border-color:var(--border)}
+.pp-hero{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.9fr);align-items:center;gap:30px;min-height:500px;margin:4px 0 30px;padding:clamp(28px,5vw,70px);border:1px solid rgba(122,166,198,.19);border-radius:28px;background:linear-gradient(115deg,rgba(13,29,47,.98),rgba(11,18,34,.92) 58%,rgba(30,28,57,.88));box-shadow:0 35px 90px rgba(0,0,0,.26)}
+.pp-hero:after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 76% 50%,rgba(85,224,192,.15),transparent 28%),linear-gradient(90deg,transparent,rgba(85,224,192,.035));}
+.hero-copy{max-width:690px;z-index:2}
+.hero-kicker{display:flex;align-items:center;gap:10px;color:#a8c3d7;font-size:.68rem;font-weight:800;letter-spacing:.2em}
+.live-pulse{width:8px;height:8px;border-radius:50%;background:#55e0c0;box-shadow:0 0 0 6px rgba(85,224,192,.12),0 0 20px #55e0c0}
+.pp-hero h1{font-size:clamp(2.6rem,6vw,5.5rem);line-height:.99;letter-spacing:-.065em;margin:22px 0 20px;font-weight:850}
+.pp-hero h1 span{background:linear-gradient(90deg,#e8f5ff,#55e0c0 72%,#d8ad65);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pp-hero p{max-width:590px;color:#a5b6cc;font-size:clamp(.95rem,1.4vw,1.08rem);line-height:1.8}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0 38px}
+.hero-primary,.hero-secondary{display:inline-flex;align-items:center;gap:24px;padding:13px 18px;border-radius:12px;font-size:.88rem;font-weight:800}
+.hero-primary{background:var(--accent);color:#04131a;box-shadow:0 12px 30px rgba(85,224,192,.18)}
+.hero-primary span{font-size:1.1rem}
+.hero-secondary{border:1px solid rgba(174,199,223,.25);color:#d9e8f5;background:rgba(255,255,255,.025)}
+.hero-metrics{display:flex;gap:clamp(18px,3vw,44px);flex-wrap:wrap}
+.hero-metrics div{display:flex;flex-direction:column;gap:4px}
+.hero-metrics strong{font-size:.72rem;letter-spacing:.13em;color:#eaf5ff}
+.hero-metrics span{font-size:.72rem;color:#8298b3}
+.hero-visual{height:360px;position:relative;display:grid;place-items:center}
+.visual-ring,.visual-core{position:absolute;border-radius:50%;display:grid;place-items:center}
+.visual-ring{border:1px solid rgba(85,224,192,.22);box-shadow:inset 0 0 55px rgba(85,224,192,.035),0 0 55px rgba(85,224,192,.04)}
+.ring-a{width:300px;height:300px;transform:rotateX(62deg) rotateZ(-25deg)}
+.ring-b{width:240px;height:340px;transform:rotateY(64deg) rotateZ(35deg);border-color:rgba(216,173,101,.24)}
+.visual-core{width:170px;height:170px;background:radial-gradient(circle at 35% 28%,#1d4654,#0b1a2b 65%);border:1px solid rgba(85,224,192,.4);box-shadow:0 0 70px rgba(85,224,192,.15),inset 0 0 35px rgba(85,224,192,.12);flex-direction:column;gap:8px}
+.visual-core span{font-size:3.4rem;font-weight:900;letter-spacing:-.1em;color:#65e6ca}
+.visual-core small{text-align:center;font-size:.52rem;letter-spacing:.22em;color:#9cb8ca;line-height:1.5}
+.visual-chip{position:absolute;padding:10px 13px;border:1px solid rgba(166,196,218,.2);border-radius:11px;background:rgba(8,20,34,.88);backdrop-filter:blur(12px);font-size:.65rem;letter-spacing:.1em;color:#9db4ca;box-shadow:0 12px 30px rgba(0,0,0,.22)}
+.visual-chip b{display:block;color:#e9f7ff;font-size:.78rem;margin-top:3px}
+.chip-a{top:38px;right:2%}.chip-b{bottom:48px;left:0}.chip-c{bottom:20px;right:0}
+.daily{border-left:3px solid var(--accent2);padding:18px 22px}
+.pp-footer{max-width:1440px;margin:0 auto;padding:34px 26px 28px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;color:var(--muted)}
+.pp-footer b{color:var(--text);letter-spacing:.15em;font-size:.85rem}
+.pp-footer p{margin:7px 0 0;font-size:.8rem}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.footer-links a{font-size:.8rem;color:#a8bad0}
+.pp-footer small{grid-column:1/-1;font-size:.72rem;color:#71849d}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media(max-width:850px){.pp-hero{grid-template-columns:1fr;min-height:unset}.hero-visual{height:270px}.ring-a{width:240px;height:240px}.ring-b{width:190px;height:280px}.visual-core{width:140px;height:140px}.row2,.row3{grid-template-columns:1fr}}
+@media(max-width:600px){.head{padding:12px 14px}.head .actions{width:100%}.search{min-width:0;flex:1;width:100%}.clock{display:none}nav.sub{padding:0 10px}nav.sub a{padding:11px 12px}main{padding:16px 13px 50px}.pp-hero{padding:27px 22px;border-radius:20px;gap:0}.pp-hero h1{font-size:clamp(2.45rem,13vw,3.8rem)}.hero-visual{height:230px;transform:scale(.88)}.hero-metrics{gap:15px}.hero-metrics div{min-width:calc(50% - 15px)}.pp-footer{padding:28px 16px;grid-template-columns:1fr}.footer-links{gap:13px}.pp-footer small{grid-column:auto}.grid-cards{grid-template-columns:1fr}.card{padding:15px}.market-lab .chart-frame{height:420px;min-height:380px}}
+@media(prefers-reduced-motion:no-preference){.live-pulse{animation:ppPulse 2s infinite}.visual-core{animation:ppFloat 7s ease-in-out infinite}@keyframes ppPulse{50%{box-shadow:0 0 0 10px rgba(85,224,192,.035),0 0 26px #55e0c0}}@keyframes ppFloat{50%{transform:translateY(-8px)}}}
 </style>
-</head>
-<body>
+'''
+s = s.replace('</head>', modern_css + '\\n</head>')
 
-<div class="ticker">
-  <div class="ticker-track" id="ticker"></div>
-</div>
+# Add year display behavior to existing main JS, avoiding hard-coded 2027 in perpetuity.
+s = s.replace("function tick(){ $('clock').textContent", "if ($('ppYear')) $('ppYear').textContent = new Date().getFullYear();\\nfunction tick(){ $('clock').textContent")
 
-<header>
-  <div class="container nav">
-    <a href="#" class="logo">
-      <div class="logo-mark"></div>
-      <div class="logo-text">PİYASA PUSULASI<span>FİNANS ANALİZ</span></div>
-    </a>
-    <nav class="menu" id="menu">
-      <a href="#bultenler">Bültenler</a>
-      <a href="#sinyaller">Sinyaller</a>
-      <a href="#egitim">Eğitim</a>
-      <a href="#hakkinda">Hakkında</a>
-      <a href="#iletisim">İletişim</a>
-    </nav>
-    <div style="display:flex; gap:12px; align-items:center;">
-      <a href="https://t.me/piyasapusula1" target="_blank" rel="noopener" class="cta">Telegram</a>
-      <button class="menu-btn" id="menuBtn" aria-label="Menü">☰</button>
-    </div>
-  </div>
-</header>
+# Correct wording to avoid claiming widgets are necessarily real-time.
+s = s.replace('Canlı Grafik ve Teknik Görünüm', 'Piyasa Grafikleri ve Teknik Görünüm')
+s = s.replace('Farklı varlık sınıflarını tek ekrandan inceleyin.', 'Farklı varlık sınıflarını tek ekrandan takip edin.')
+s = s.replace('Grafik sağlayıcısı: TradingView', 'Grafik kaynağı: TradingView')
 
-<main>
-  <section class="hero">
-    <div class="container">
-      <span class="eyebrow">Disiplinli Piyasa Takibi</span>
-      <h1>Piyasalarda <em>yönünüzü</em> kaybetmeyin</h1>
-      <p>Günlük bültenler, teknik ve temel analizler ile finans okuryazarlığı eğitimleri. Veriyi anlamlandırıp size net bir çerçeve sunuyoruz.</p>
-      <div class="btn-row">
-        <a href="https://t.me/piyasapusula1" target="_blank" rel="noopener" class="btn btn-primary">Telegram'a Katıl</a>
-        <a href="#egitim" class="btn btn-ghost">Ücretsiz Eğitim</a>
-      </div>
-    </div>
-  </section>
+# Security warning on local-only admin path; preserve functionality for preview but disclose limitation.
+s = s.replace("function openAdminLocal(){\\n  const pin", "function openAdminLocal(){\\n  alert('Sunucu bağlantısı henüz yapılandırılmadı. Bu yönetici modu yalnızca bu tarayıcıda çalışır; PIN güvenli sunucu kimlik doğrulaması değildir ve değişiklikler ziyaretçilere aktarılmaz. Canlı yayın için sunucu API bağlantısı gerekir.');\\n  const pin")
 
-  <section style="padding-top:0;">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <span class="tag">Piyasa Özeti</span>
-          <h2>Bugünün Görünümü</h2>
-        </div>
-        <p>Aşağıdaki değerler örnek amaçlıdır, canlı veri değildir.</p>
-      </div>
-      <div class="grid-4">
-        <div class="card"><div class="stat-label">BIST 100</div><div class="stat-value">9.845,20</div><div class="stat-change up">▲ %0,82</div></div>
-        <div class="card"><div class="stat-label">USD / TRY</div><div class="stat-value">36,12</div><div class="stat-change up">▲ %0,15</div></div>
-        <div class="card"><div class="stat-label">Gram Altın</div><div class="stat-value">3.150,40</div><div class="stat-change down">▼ %0,34</div></div>
-        <div class="card"><div class="stat-label">Bitcoin</div><div class="stat-value">$92.400</div><div class="stat-change up">▲ %1,27</div></div>
-      </div>
-    </div>
-  </section>
+# Use root page as single-page application; keep old /panel URL as a redirect for existing bookmarks.
+(root / "index.html").write_text(s, encoding="utf-8")
+(root / "panel" / "index.html").write_text('''<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="0;url=../#ana"><title>Piyasa Pusulası</title><link rel="canonical" href="../"></head><body><p>Yeni tek sayfalı Piyasa Pusulası'na yönlendiriliyorsunuz. <a href="../#ana">Devam et</a>.</p><script>location.replace('../#ana');</script></body></html>''', encoding="utf-8")
 
-  <section id="bultenler">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <span class="tag">Bültenler</span>
-          <h2>Son Piyasa Bültenleri</h2>
-        </div>
-        <p>Her iş günü piyasa açılışından önce yayınlanan kısa ve net özetler.</p>
-      </div>
-      <div class="grid-3">
-        <article class="card">
-          <span class="tag">Günlük Bülten</span>
-          <h3>Açılış öncesi küresel görünüm ve kritik seviyeler</h3>
-          <p>Küresel endeksler, döviz ve emtia hareketlerinin Borsa İstanbul üzerindeki olası etkilerini özetliyoruz.</p>
-          <div class="meta"><span>Bu hafta</span><span>5 dk okuma</span></div>
-        </article>
-        <article class="card">
-          <span class="tag">Haftalık Analiz</span>
-          <h3>Haftanın öne çıkan gelişmeleri ve takvim</h3>
-          <p>Önemli veri açıklamaları, faiz kararları ve şirket bilançolarını tek sayfada topluyoruz.</p>
-          <div class="meta"><span>Bu hafta</span><span>8 dk okuma</span></div>
-        </article>
-        <article class="card">
-          <span class="tag">Teknik Görünüm</span>
-          <h3>Ana endekslerde destek ve direnç seviyeleri</h3>
-          <p>Trend, hacim ve momentum göstergelerini sade bir dille yorumluyoruz.</p>
-          <div class="meta"><span>Bu hafta</span><span>6 dk okuma</span></div>
-        </article>
-      </div>
-    </div>
-  </section>
+# Add deployment and GitHub docs.
+(root / "netlify.toml").write_text('''[build]
+  publish = "."
 
-  <section id="sinyaller">
-    <div class="container band">
-      <div>
-        <span class="tag">Sinyaller</span>
-        <h2>Disiplin, sinyalden önce gelir</h2>
-        <p>Sinyallerimizi tek başına bir alım-satım kararı olarak değil, kendi risk planınızın bir parçası olarak sunuyoruz. Her sinyalde giriş, stop ve hedef seviyeleri ile gerekçeler yer alır.</p>
-      </div>
-      <ul class="checklist">
-        <li>Risk yönetimi öncelikli yaklaşım</li>
-        <li>Net giriş, stop ve hedef seviyeleri</li>
-        <li>Gerekçesi açıklanmış teknik ve temel analiz</li>
-        <li>Sonuçların şeffaf takibi</li>
-      </ul>
-    </div>
-  </section>
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
 
-  <section id="egitim">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <span class="tag">Eğitim</span>
-          <h2>Finans Okuryazarlığı</h2>
-        </div>
-        <p>Sermayeniz ne olursa olsun, doğru temelle başlamak mümkün.</p>
-      </div>
-      <div class="grid-3">
-        <div class="card"><div class="feature-icon">📘</div><h3>Temel Kavramlar</h3><p>Hisse, tahvil, enflasyon, faiz ve kaldıraç gibi temel kavramların sade anlatımı.</p></div>
-        <div class="card"><div class="feature-icon">📊</div><h3>Teknik Analiz</h3><p>Grafik okuma, trend ve destek-direnç mantığı, uygulamalı örneklerle.</p></div>
-        <div class="card"><div class="feature-icon">🛡️</div><h3>Risk Yönetimi</h3><p>Pozisyon büyüklüğü, zarar durdurma ve portföy çeşitlendirmesi üzerine çalışmalar.</p></div>
-      </div>
-      <div style="margin-top:30px; text-align:center;">
-        <a href="https://t.me/piyasapusula1" target="_blank" rel="noopener" class="btn btn-primary">Ücretsiz Canlı Yayınlara Katıl</a>
-      </div>
-    </div>
-  </section>
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+''', encoding="utf-8")
 
-  <section id="hakkinda">
-    <div class="container about-grid">
-      <div class="card about-card">
-        <span class="tag">Hakkında</span>
-        <h2 style="font-family:'Playfair Display',serif; font-size:30px; margin:12px 0 18px;">Piyasa Pusulası</h2>
-        <p>Piyasa Pusulası, yatırımcıların piyasaları daha bilinçli takip edebilmesi için kurulmuş bir finans analiz ve eğitim platformudur.</p>
-        <p>Amacımız hızlı kazanç vaat etmek değil; veriyi doğru okumak, riski görünür kılmak ve disiplinli bir yaklaşım geliştirmenize yardımcı olmaktır.</p>
-      </div>
-      <div class="card" id="iletisim">
-        <span class="tag">İletişim</span>
-        <h2 style="font-family:'Playfair Display',serif; font-size:30px; margin:12px 0 18px;">Bizimle İletişime Geçin</h2>
-        <div class="contact-item"><span>Telegram</span><a href="https://t.me/piyasapusula1" target="_blank" rel="noopener" style="color:var(--gold-soft);">t.me/piyasapusula1</a></div>
-        <div class="contact-item"><span>Web</span><a href="https://deltan1capital.org" target="_blank" rel="noopener" style="color:var(--gold-soft);">deltan1capital.org</a></div>
-      </div>
-    </div>
-  </section>
-</main>
+(root / ".gitignore").write_text('''.DS_Store
+.env
+.env.*
+!.env.example
+node_modules/
+.netlify/
+''', encoding="utf-8")
 
-<footer>
-  <div class="container">
-    <div class="disclaimer">
-      <strong>Yasal Uyarı:</strong> Bu sitede yer alan içerikler yalnızca bilgilendirme amaçlıdır ve yatırım danışmanlığı, yatırım tavsiyesi veya alım-satım önerisi niteliği taşımaz. Yatırım kararlarının sorumluluğu okuyucuya aittir.
-    </div>
-    <div class="foot-row">
-      <span>© 2026 Piyasa Pusulası. Tüm hakları saklıdır.</span>
-      <span>Yatırımlarınızla ilgili kararlardan önce bağımsız bir uzmana danışın.</span>
-    </div>
-  </div>
-</footer>
+(root / "README.md").write_text('''# Piyasa Pusulası — 2027
 
-<script>
-  // Üst bant: örnek veriler (canlı veri değildir)
-  const tickerData = [
-    { name: "BIST 100", value: "9.845,20", change: "+0,82%", up: true },
-    { name: "USD/TRY", value: "36,12", change: "+0,15%", up: true },
-    { name: "EUR/TRY", value: "38,40", change: "-0,21%", up: false },
-    { name: "Altın (ons)", value: "$2.685", change: "+0,44%", up: true },
-    { name: "Gümüş", value: "$31,20", change: "-0,58%", up: false },
-    { name: "Bitcoin", value: "$92.400", change: "+1,27%", up: true },
-    { name: "Brent Petrol", value: "$74,10", change: "-0,33%", up: false }
-  ];
-  const track = document.getElementById("ticker");
-  const items = [...tickerData, ...tickerData].map(d =>
-    `<span class="ticker-item">${d.name} <b>${d.value}</b> <span class="${d.up ? 'up' : 'down'}">${d.up ? '▲' : '▼'} ${d.change}</span></span>`
-  ).join("");
-  track.innerHTML = items;
+Tek sayfalı, mobil uyumlu finans/piyasa terminali. Ana sayfa, grafikler, analiz yazıları, notlar, terim sözlüğü, anket, podcast alanı, bilgi testi ve yönetici arayüzü aynı ekranda birleştirilmiştir.
 
-  // Mobil menü
-  const btn = document.getElementById("menuBtn");
-  const menu = document.getElementById("menu");
-  btn.addEventListener("click", () => menu.classList.toggle("open"));
-  menu.querySelectorAll("a").forEach(a => a.addEventListener("click", () => menu.classList.remove("open")));
-</script>
-</body>
-</html>
+## Yerel önizleme
+`index.html` dosyasını tarayıcıda açabilir veya klasörde basit bir statik sunucu çalıştırabilirsiniz.
+
+## GitHub'a yükleme
+1. Bu klasörün içeriğini GitHub'da yeni bir repository'ye yükleyin.
+2. Netlify'da **Add new site → Import an existing project** seçin.
+3. GitHub repository'sini bağlayın.
+4. Build command boş, Publish directory `.` olsun.
+5. Deploy edin.
+
+## Önemli entegrasyon notları
+- Grafikler TradingView gömülü widgetlarıyla gelir. Sembol/borsa bazında veri gecikmesi ve kullanım koşulları değişebilir; bu uygulama emir iletmez.
+- Bu paket tek başına gerçek zamanlı piyasa veri API'si, yapay zekâ analiz servisi veya ortak yönetici veritabanı içermez. Bunlar için sunucu tarafı API, sağlayıcı anahtarları ve veri lisansı gerekir.
+- Yönetici API adresi henüz yapılandırılmadığından yönetici alanındaki yerel mod yalnızca o tarayıcıda saklama yapar. Yerel PIN güvenli kimlik doğrulaması değildir. GitHub'a API anahtarı/parola koymayın.
+- Yapay zekâ taslağı ve ortak içerik yönetimi için Cloudflare Worker/Netlify Functions veya Supabase Edge Functions gibi sunucu katmanı kurulmalı; API anahtarları yalnızca sunucu ortam değişkenlerinde tutulmalıdır.
+- TradingView widgetları teknik görünüm sağlar; kendi hesapladığımız RSI/MACD/EMA/ATR ve destek/direnç verisi için lisanslı OHLC API bağlantısı gerekir.
+- E-posta bülteni için `CONFIG.FORM_ACTION`, KVKK aydınlatma metni ve açık rıza akışı gerçek servis bilgileriyle yapılandırılmalıdır.
+- Yatırım tavsiyesi değildir. Finansal kararlar kullanıcı sorumluluğundadır.
+
+## Yayın öncesi kontrol
+- Mobil ve masaüstünde menü/grafik kontrollerini deneyin.
+- TradingView widgetlarının yüklenmesini kontrol edin.
+- Gerçek veri ve AI servisi bağlanana kadar otomatik fiyat/AI yorumu varmış gibi tanıtım yapmayın.
+- Yönetici API'si ve KVKK/bülten entegrasyonları tamamlanmadan ziyaretçi verisi toplamaya başlamayın.
+''', encoding="utf-8")
+
+(root / "YAYINLAMA-OKU.txt").write_text('''PIYASA PUSULASI 2027 — YAYINLAMA
+
+1. Bu klasörün tamamını GitHub repository'sine yükleyin.
+2. Netlify'da GitHub repository'sini bağlayın.
+3. Build command boş bırakın, Publish directory alanına . yazın.
+4. Deploy edin.
+
+Bu sürümde ana site ve eski /panel adresi tek sayfada birleştirildi. /panel yolu ana sayfaya yönlenir.
+
+DİKKAT:
+- TradingView grafik widgetları üçüncü taraf hizmetidir; her sembolde gecikme ve erişim koşulları değişebilir.
+- Gerçek veri API'si, otomatik AI yorumu, ortak admin veritabanı ve güvenli yönetici girişi henüz sunucuya bağlanmış değildir.
+- Yerel PIN yalnızca tarayıcı içindir; güvenlik sağlamaz ve içerik diğer ziyaretçilere yayınlanmaz.
+- API anahtarlarını GitHub'a yüklemeyin. Sunucu ortam değişkenlerinde saklayın.
+- Netlify deploy öncesinde eski deploy'u geri dönüş için koruyun.
+''', encoding="utf-8")
+
+# Create distribution archive.
+outzip = Path("/mnt/data/piyasa-pusulasi-2027-github-hazir.zip")
+with zipfile.ZipFile(outzip, "w", zipfile.ZIP_DEFLATED) as zf:
+    for f in root.rglob("*"):
+        if f.is_file():
+            zf.write(f, Path("piyasa-pusulasi-2027") / f.relative_to(root))
+str(outzip), outzip.stat().st_size, len(list(root.rglob("*")))
